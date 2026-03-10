@@ -1,0 +1,132 @@
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { articlesMeta, articleContent } from "@/data/articles";
+
+export function generateStaticParams() {
+  return articlesMeta.map((a) => ({ id: a.id }));
+}
+
+const relatedFor = (currentId: string) =>
+  articlesMeta.filter((a) => a.id !== currentId).slice(0, 3);
+
+export default async function BlogArticlePage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+  const article = articlesMeta.find((a) => a.id === id);
+  const content = articleContent[id];
+
+  if (!article || !content) notFound();
+
+  const related = relatedFor(id);
+
+  return (
+    <>
+      {/* Top Navigation */}
+      <header className="sticky top-0 z-50 flex items-center justify-between whitespace-nowrap border-b border-border-color bg-background-dark/90 backdrop-blur px-6 lg:px-10 py-3 w-full">
+        <div className="flex items-center gap-4 text-text-main">
+          <div className="size-6 bg-primary text-black flex items-center justify-center rounded-sm">
+            <span className="material-symbols-outlined text-sm font-bold">
+              hub
+            </span>
+          </div>
+          <h2 className="text-text-main text-xl font-bold leading-tight tracking-wider uppercase">
+            CivilClaw
+          </h2>
+        </div>
+        <Link
+          href="/blog"
+          className="text-text-muted hover:text-primary transition-colors text-sm font-mono uppercase tracking-widest flex items-center gap-2"
+        >
+          <span className="material-symbols-outlined text-sm">arrow_back</span>
+          返回文章
+        </Link>
+      </header>
+
+      {/* Main Content */}
+      <main className="w-full px-6 lg:px-20 py-12 flex flex-col gap-12 relative z-10">
+        <article className="flex flex-col gap-6 max-w-4xl mx-auto w-full">
+          <div className="flex items-center gap-3 mb-2">
+            <span
+              className={`inline-flex items-center justify-center px-4 py-1 rounded-full border bg-black text-xs font-mono uppercase tracking-widest shadow-[0_0_10px_rgba(255,0,122,0.2)] ${article.tagClass}`}
+            >
+              {article.tag}
+            </span>
+            {article.featured && (
+              <span className="inline-flex items-center justify-center px-4 py-1 rounded-full border border-primary text-primary bg-black text-xs font-mono uppercase tracking-widest">
+                置顶
+              </span>
+            )}
+          </div>
+
+          <h1 className="text-4xl lg:text-5xl font-bold leading-tight tracking-tight text-text-main">
+            {article.title}
+          </h1>
+
+          <div className="flex items-center gap-4 py-4 border-y border-border-color mt-2">
+            <div className="w-10 h-10 rounded-full bg-surface-darker border border-border-color flex items-center justify-center text-primary font-mono text-sm font-bold">
+              <span className="material-symbols-outlined text-lg">
+                engineering
+              </span>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-text-main font-mono font-bold text-sm uppercase">
+                {article.author}
+              </span>
+              <span className="text-text-muted font-mono text-xs tracking-widest">
+                {article.date} · 阅读 {article.readTime}
+              </span>
+            </div>
+          </div>
+
+          {/* Article Content */}
+          <div className="mt-4 space-y-6">{content}</div>
+        </article>
+
+        <hr className="border-border-color my-4 max-w-4xl mx-auto w-full" />
+
+        {/* Author Bio */}
+        <div className="max-w-4xl mx-auto w-full bg-surface rounded-[2rem] border border-border-color p-6 flex items-center gap-6">
+          <div className="w-16 h-16 rounded-full bg-surface-hover border border-border-color flex items-center justify-center shrink-0">
+            <span className="material-symbols-outlined text-3xl text-primary">
+              engineering
+            </span>
+          </div>
+          <div className="flex flex-col gap-1">
+            <span className="text-text-main font-bold">{article.author}</span>
+            <p className="text-text-muted text-sm font-mono">
+              土木工程师 · CivilClaw 社区成员 · 用 AI Agent 探索工程工作流自动化
+            </p>
+          </div>
+        </div>
+
+        {/* Related Articles */}
+        <div className="max-w-4xl mx-auto w-full">
+          <h2 className="text-xl font-bold text-text-main mb-6 uppercase tracking-wider">
+            相关文章
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {related.map((a) => (
+              <Link
+                key={a.id}
+                href={`/blog/${a.id}`}
+                className="group bg-surface rounded-xl border border-border-color p-5 hover:border-primary/50 transition-colors"
+              >
+                <span
+                  className={`px-2 py-0.5 rounded-full border bg-black text-[10px] font-bold uppercase ${a.tagClass}`}
+                >
+                  {a.tag}
+                </span>
+                <h3 className="text-sm font-bold text-text-main mt-3 group-hover:text-primary transition-colors line-clamp-2">
+                  {a.title}
+                </h3>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </main>
+    </>
+  );
+}
