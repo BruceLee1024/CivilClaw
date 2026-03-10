@@ -478,7 +478,7 @@ export default function LandingPage() {
           <div className="flex flex-col items-center gap-3 shrink-0">
             <div className="w-40 h-40 rounded-xl overflow-hidden border border-border-color">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/wechat-qr.jpg" alt="微信二维码" className="w-full h-full object-cover" />
+              <img src="/CivilClaw/wechat-qr.jpg" alt="微信二维码" className="w-full h-full object-cover" />
             </div>
             <span className="text-text-muted text-[11px] font-mono">扫码加微信 · 加入养虾群</span>
           </div>
