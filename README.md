@@ -1,36 +1,70 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🦞 CivilClaw
+## 土木人的 OpenClaw 养虾基地
 
-## Getting Started
+> 全网都在“养龙虾”，土木人怎么能缺席。
 
-First, run the development server:
+还在翻规范？还在手写施工日志？还在表格里一格一格算工程量？  
+2026 年了，让你的虾先干活。
+
+---
+
+## 这项目是干嘛的？
+
+CivilClaw 是一个面向土木工程师的 OpenClaw 中文内容社区。  
+主打一句话：**不聊虚的，只给能直接上手的。**
+
+你能在这里找到：
+
+- 🍤 **养虾手册**：安装、配置、实战教程（从 0 到能跑）
+- 🦐 **虾饲料仓库**：土木场景 Skill 精选（查规范 / 写日志 / 算量 / 追论文）
+- 🧰 **养虾装备库**：部署方案、模板、工具链资源
+
+---
+
+## 谁适合来这个虾塘？
+
+- 🏗️ 设计院同学：查规范、查案例、快速形成方案草稿
+- 👷 现场同学：日报自动化、进度提醒、信息同步
+- 💰 造价同学：清单整理、公式辅助、重复工作自动化
+- 📚 备考同学：错题整理、计划生成、知识库沉淀
+
+总之，**只要你是土木人、想把重复劳动交给 AI，你就来对了。**
+
+---
+
+## 本地开发
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+打开 `http://localhost:3000`。
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 构建与发布
 
-## Learn More
+```bash
+npm run build
+```
 
-To learn more about Next.js, take a look at the following resources:
+项目已配置 GitHub Actions 自动部署 GitHub Pages：  
+推送到 `main` 分支后会自动构建并发布。
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 技术栈
 
-## Deploy on Vercel
+- Next.js 16 (App Router)
+- React 19
+- Tailwind CSS 4
+- TypeScript
+- GitHub Actions + GitHub Pages
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 免责声明
+
+CivilClaw 是非官方社区内容站。  
+OpenClaw 相关版权归原项目及其贡献者所有。
