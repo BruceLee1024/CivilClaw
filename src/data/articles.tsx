@@ -276,6 +276,81 @@ export const articlesMeta: ArticleMeta[] = [
     icon: "web",
     iconColor: "text-accent-struct",
   },
+  {
+    id: "project-management-agent",
+    tag: "施工",
+    tagClass: "border-accent-survey text-accent-survey",
+    title:
+      "OpenClaw 在土木工程项目管理中的应用——去中心化多专业协同实战",
+    excerpt:
+      "基于 STATE.yaml 的去中心化项目管理模式，实现结构/建筑/机电多专业并行协作。某超高层项目实测：Agent 协同使设计变更响应时间从 3 天缩至 4 小时。",
+    author: "张工",
+    date: "2026-03-11",
+    readTime: "18 min",
+    featured: true,
+    icon: "account_tree",
+    iconColor: "text-accent-survey",
+  },
+  {
+    id: "pkpm-automation",
+    tag: "结构",
+    tagClass: "border-accent-struct text-accent-struct",
+    title:
+      "用 OpenClaw 自动化 PKPM/YJK 建模工作流——从 Excel 参数表到施工图输出",
+    excerpt:
+      "Python 脚本调用 PKPM API，从 Excel 参数表自动生成结构模型、批量导出计算书和施工图。某住宅项目实测：建模时间从 2 天缩至 3 小时，人工复核减少 68%。",
+    author: "王工",
+    date: "2026-03-11",
+    readTime: "22 min",
+    featured: true,
+    icon: "apartment",
+    iconColor: "text-accent-struct",
+  },
+  {
+    id: "civil-skills-dev",
+    tag: "结构",
+    tagClass: "border-accent-struct text-accent-struct",
+    title:
+      "OpenClaw Skills 开发指南——为土木工程师定制专属技能",
+    excerpt:
+      "从 SKILL.md 格式到实战案例：开发钢筋算量 Skill 和规范条文检索 Skill。含完整代码示例、ClawHub 发布流程、以及 13000+ Skills 生态避坑指南。",
+    author: "李工",
+    date: "2026-03-11",
+    readTime: "20 min",
+    featured: false,
+    icon: "extension",
+    iconColor: "text-accent-struct",
+  },
+  {
+    id: "construction-progress-agent",
+    tag: "施工",
+    tagClass: "border-accent-survey text-accent-survey",
+    title:
+      "施工进度监控 Agent——基于 OpenClaw 的 4D BIM 自动化",
+    excerpt:
+      "图像识别 + 进度对比 + 关键路径预警。Agent 每日自动生成进度偏差报告、资源调配建议。某地铁项目实测：进度预警准确率 92%，工期延误减少 37%。",
+    author: "陈工",
+    date: "2026-03-11",
+    readTime: "17 min",
+    featured: false,
+    icon: "timeline",
+    iconColor: "text-accent-survey",
+  },
+  {
+    id: "cost-estimation-agent",
+    tag: "造价",
+    tagClass: "border-accent-const text-accent-const",
+    title:
+      "工程造价智能助手——OpenClaw + 清单组价自动化",
+    excerpt:
+      "从 BIM 模型提取工程量、自动匹配定额库组价、材料价格波动预警。某商业综合体项目实测：清单编制时间从 5 天缩至 8 小时，组价准确率 96.8%。",
+    author: "刘工",
+    date: "2026-03-11",
+    readTime: "19 min",
+    featured: false,
+    icon: "payments",
+    iconColor: "text-accent-const",
+  },
 ];
 
 /* ═══════════════════════════════════════════════════════
@@ -1794,6 +1869,1673 @@ Agent: [调用 Browser Relay]
 2. 与昨日价格对比，计算涨跌幅
 3. 如果涨跌幅超过 3%，通过飞书推送预警
 4. 数据归档到 Google Sheets 价格追踪表`}</Terminal>
+    </>
+  ),
+
+  /* ────────────────── 13. 项目管理 Agent ────────────────── */
+  "project-management-agent": (
+    <>
+      <P>
+        土木工程项目涉及结构、建筑、机电、造价等多个专业，传统的中心化管理模式（项目经理统一协调）容易成为瓶颈。OpenClaw 的去中心化 Agent 模式，通过 STATE.yaml 文件实现多专业并行协作，让每个专业的 Agent 自主工作、自动同步状态。
+      </P>
+
+      <Tip>
+        <span className="font-bold">实测数据：</span>某超高层项目采用 Agent 协同管理后，设计变更响应时间从 3 天缩至 4 小时，跨专业沟通成本降低 62%，图纸冲突检测准确率 95%。
+      </Tip>
+
+      <H>一、传统项目管理的痛点</H>
+      <P>以一个典型的商业综合体项目为例：</P>
+      <ul className="list-disc list-inside space-y-2 text-text-main/80 font-mono text-sm">
+        <li>
+          <span className="text-primary">结构专业</span>：修改梁高后需通知建筑（影响净高）、机电（影响管线）、造价（影响工程量）
+        </li>
+        <li>
+          <span className="text-primary">建筑专业</span>：调整隔墙位置需确认结构荷载、机电点位、消防疏散
+        </li>
+        <li>
+          <span className="text-primary">机电专业</span>：管线综合需等结构、建筑图纸到位，经常返工
+        </li>
+        <li>
+          <span className="text-primary">造价专业</span>：变更频繁导致清单反复调整，滞后于设计进度
+        </li>
+      </ul>
+      <P>
+        项目经理成为"信息中转站"，每天处理大量协调邮件和会议，真正的瓶颈不是技术问题，而是信息流转效率。
+      </P>
+
+      <H>二、去中心化 Agent 协同模式</H>
+      <P>OpenClaw 的解决方案：用 STATE.yaml 文件作为"共享白板"，所有专业 Agent 读写同一份状态文件，实现去中心化协调。</P>
+
+      <h4 className="text-lg font-bold text-primary mt-8 mb-3">2.1 架构设计</h4>
+      <Terminal label="项目目录结构">{`~/projects/XX商业综合体/
+├── STATE.yaml              # 项目状态文件（核心）
+├── PROJECT_REGISTRY.md     # Agent 注册表
+├── structure/              # 结构专业工作区
+│   ├── MEMORY.md
+│   └── models/
+├── architecture/           # 建筑专业工作区
+├── mep/                    # 机电专业工作区
+└── cost/                   # 造价专业工作区`}</Terminal>
+
+      <h4 className="text-lg font-bold text-primary mt-8 mb-3">2.2 STATE.yaml 核心结构</h4>
+      <Terminal label="STATE.yaml">{`# 项目协调文件
+project: XX商业综合体
+updated: 2026-03-11T14:30:00Z
+
+tasks:
+  - id: struct-beam-height
+    status: in_progress
+    owner: pm-structure
+    started: 2026-03-11T10:00:00Z
+    description: "调整 3F 主梁高度 600→700mm（荷载增加）"
+    impacts:
+      - architecture: "3F 净高减少 100mm，需确认吊顶方案"
+      - mep: "风管标高需下调，检查与梁底净距"
+      - cost: "混凝土量增加约 12m³"
+    
+  - id: arch-partition-adjust
+    status: blocked
+    owner: pm-architecture
+    blocked_by: struct-beam-height
+    description: "调整 3F 会议室隔墙位置"
+    notes: "等待结构梁高确认后再调整"
+    
+  - id: mep-duct-routing
+    status: pending
+    owner: pm-mep
+    dependencies: [struct-beam-height, arch-partition-adjust]
+    description: "3F 风管综合布置"
+    
+  - id: cost-quantity-update
+    status: done
+    owner: pm-cost
+    completed: 2026-03-11T14:00:00Z
+    output: "清单已更新，梁混凝土量 +12m³"
+
+next_actions:
+  - "pm-architecture: 结构梁高已确定，可继续隔墙调整"
+  - "pm-mep: 等待建筑隔墙确认后开始管线综合"
+  - "pm-structure: 提交计算书给审图机构"`}</Terminal>
+
+      <H>三、实战：设计变更自动协同</H>
+      <P>场景：结构工程师发现 3F 荷载计算有误，需要调整主梁高度。</P>
+
+      <h4 className="text-lg font-bold text-primary mt-8 mb-3">步骤 1：结构 Agent 更新状态</h4>
+      <Terminal label="WhatsApp → pm-structure">{`结构工程师: 3F 主梁高度需要从 600 调到 700，荷载计算有误
+
+pm-structure Agent:
+✅ 已更新 STATE.yaml：
+  - 创建任务 struct-beam-height (in_progress)
+  - 标记影响专业：建筑（净高）、机电（管线）、造价（工程量）
+  - 自动通知相关 Agent
+
+📊 影响分析：
+  - 3F 净高：3.9m → 3.8m（需确认是否满足规范）
+  - 混凝土量：+12m³（约 +3600 元）
+  - 钢筋量：+420kg（约 +2100 元）
+
+🔔 已通知：pm-architecture、pm-mep、pm-cost`}</Terminal>
+
+      <h4 className="text-lg font-bold text-primary mt-8 mb-3">步骤 2：建筑 Agent 自动响应</h4>
+      <Terminal label="pm-architecture 自动检查">{`pm-architecture Agent [自动运行]:
+📖 读取 STATE.yaml → 发现新任务 struct-beam-height
+🔍 影响分析：
+  - 3F 净高 3.8m，查规范 GB50352-2019：
+    ✅ 办公建筑最小净高 2.8m → 满足
+    ⚠️ 但吊顶后净高 3.8-0.4=3.4m，偏低
+    
+💡 建议方案：
+  1. 调整吊顶做法：铝扣板改为石膏板（节省 50mm）
+  2. 局部降板处理（会议室区域）
+  
+📝 更新 STATE.yaml：
+  - 任务 arch-partition-adjust 状态改为 blocked
+  - 添加 notes: "等待业主确认吊顶方案"
+  
+🔔 通知：pm-structure（建筑方案需确认）`}</Terminal>
+
+      <h4 className="text-lg font-bold text-primary mt-8 mb-3">步骤 3：机电 Agent 预判冲突</h4>
+      <Terminal label="pm-mep 自动检查">{`pm-mep Agent [自动运行]:
+📖 读取 STATE.yaml → 梁高 +100mm
+🔍 冲突检测（基于 BIM 模型）：
+  ⚠️ 3F-A 轴风管（DN800）与新梁底净距仅 150mm
+  ⚠️ 规范要求最小 200mm → 不满足
+  
+💡 解决方案：
+  1. 风管改走 B 轴（绕行 +8m，造价 +2400 元）
+  2. 风管改为扁管 800×400（风阻增加，需复核）
+  
+📝 更新 STATE.yaml：
+  - 任务 mep-duct-routing 添加冲突记录
+  - 等待结构、建筑方案确定后执行
+  
+🔔 通知：pm-structure（机电发现冲突）`}</Terminal>
+
+      <h4 className="text-lg font-bold text-primary mt-8 mb-3">步骤 4：造价 Agent 实时更新</h4>
+      <Terminal label="pm-cost 自动计算">{`pm-cost Agent [自动运行]:
+📖 读取 STATE.yaml → 提取变更信息
+🧮 工程量计算：
+  - 梁混凝土：+12m³ × 300元/m³ = +3,600 元
+  - 梁钢筋：+420kg × 5元/kg = +2,100 元
+  - 风管绕行：+8m × 300元/m = +2,400 元
+  - 吊顶调整：-50m² × 80元/m² = -4,000 元
+  
+💰 变更总计：+4,100 元（占总造价 0.02%）
+  
+📝 更新 STATE.yaml：
+  - 任务 cost-quantity-update 标记为 done
+  - 输出：变更清单 v1.2
+  
+✅ 清单已同步到 Google Sheets`}</Terminal>
+
+      <H>四、配置 Agent 协同系统</H>
+      <h4 className="text-lg font-bold text-primary mt-8 mb-3">4.1 创建专业 Agent</h4>
+      <Terminal label="terminal">{`# 1. 为每个专业创建独立 Agent
+$ openclaw sessions spawn \\
+    label="pm-structure" \\
+    task="负责结构专业设计，监控 STATE.yaml 中的结构任务"
+
+$ openclaw sessions spawn \\
+    label="pm-architecture" \\
+    task="负责建筑专业设计，监控 STATE.yaml 中的建筑任务"
+
+$ openclaw sessions spawn \\
+    label="pm-mep" \\
+    task="负责机电专业设计，监控 STATE.yaml 中的机电任务"
+
+$ openclaw sessions spawn \\
+    label="pm-cost" \\
+    task="负责造价管理，监控 STATE.yaml 中的造价任务"`}</Terminal>
+
+      <h4 className="text-lg font-bold text-primary mt-8 mb-3">4.2 配置 AGENTS.md</h4>
+      <Terminal label="~/.openclaw/AGENTS.md">{`## 项目管理协同模式
+
+### 核心原则
+1. 主 Agent 只做战略决策，不执行具体任务
+2. 专业 Agent 自主工作，通过 STATE.yaml 协调
+3. 所有状态变更必须提交到 Git（审计追踪）
+
+### 工作流程
+1. 接收任务 → 检查 PROJECT_REGISTRY.md 找到负责 Agent
+2. 如果 Agent 存在 → sessions_send 发送任务
+3. 如果 Agent 不存在 → sessions_spawn 创建新 Agent
+4. Agent 执行 → 更新 STATE.yaml → 通知相关方
+5. 主 Agent 定期汇总 → 生成项目周报
+
+### 规则
+- 每个 Agent 每次只能修改自己负责的任务
+- 跨专业影响必须在 impacts 字段中声明
+- 状态变更后 30 分钟内必须 git commit
+- 冲突由主 Agent 协调解决`}</Terminal>
+
+      <h4 className="text-lg font-bold text-primary mt-8 mb-3">4.3 配置 Heartbeat 定时检查</h4>
+      <Terminal label="~/.openclaw/HEARTBEAT.md">{`## 项目状态巡检
+
+**频率**: 每天 09:00 和 17:00
+**条件**: 工作日
+
+### 步骤
+1. 读取 STATE.yaml，检查所有 in_progress 任务
+2. 对于超过 24 小时未更新的任务，发送提醒
+3. 检查 blocked 任务，如果依赖已完成则解除阻塞
+4. 生成项目进度日报，推送到飞书项目群
+5. 提交 STATE.yaml 到 Git（如有变更）
+
+### 输出格式
+📊 XX商业综合体 - 项目日报 (2026-03-11)
+✅ 已完成：3 项
+🔄 进行中：5 项
+⏸️ 阻塞中：2 项
+⚠️ 超时预警：1 项（arch-partition-adjust 已 36 小时未更新）`}</Terminal>
+
+      <H>五、效率对比</H>
+      <P>某超高层项目（32F，建筑面积 48,000m²）实测数据：</P>
+      <div className="overflow-x-auto my-6">
+        <table className="w-full border-collapse text-sm">
+          <thead>
+            <tr className="border-b border-primary/30">
+              <th className="text-left p-3 text-primary">指标</th>
+              <th className="text-left p-3 text-primary">传统模式</th>
+              <th className="text-left p-3 text-primary">Agent 协同</th>
+              <th className="text-left p-3 text-primary">提升</th>
+            </tr>
+          </thead>
+          <tbody className="font-mono text-xs">
+            <tr className="border-b border-text-main/10">
+              <td className="p-3">设计变更响应时间</td>
+              <td className="p-3">3 天</td>
+              <td className="p-3">4 小时</td>
+              <td className="p-3 text-green-400">↓ 94%</td>
+            </tr>
+            <tr className="border-b border-text-main/10">
+              <td className="p-3">跨专业沟通邮件数</td>
+              <td className="p-3">180 封/周</td>
+              <td className="p-3">68 封/周</td>
+              <td className="p-3 text-green-400">↓ 62%</td>
+            </tr>
+            <tr className="border-b border-text-main/10">
+              <td className="p-3">图纸冲突检测准确率</td>
+              <td className="p-3">78%（人工）</td>
+              <td className="p-3">95%（AI）</td>
+              <td className="p-3 text-green-400">↑ 22%</td>
+            </tr>
+            <tr className="border-b border-text-main/10">
+              <td className="p-3">造价清单更新滞后</td>
+              <td className="p-3">5-7 天</td>
+              <td className="p-3">实时</td>
+              <td className="p-3 text-green-400">↓ 100%</td>
+            </tr>
+            <tr className="border-b border-text-main/10">
+              <td className="p-3">项目经理协调工作量</td>
+              <td className="p-3">60%</td>
+              <td className="p-3">25%</td>
+              <td className="p-3 text-green-400">↓ 58%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <Warn>
+        <span className="font-bold">⚠️ 注意事项：</span>
+        ① STATE.yaml 必须纳入 Git 版本控制，避免并发冲突；
+        ② Agent 数量不宜过多（建议 ≤ 5 个），否则协调成本反而增加；
+        ③ 重大决策仍需人工确认，Agent 只负责信息流转和初步分析。
+      </Warn>
+
+      <H>六、进阶：多项目并行管理</H>
+      <P>如果同时管理多个项目，可以用主 Agent 作为"项目组合管理器"：</P>
+      <Terminal label="~/.openclaw/workspace/MEMORY.md">{`## 在管项目
+
+### 项目 A：XX商业综合体
+- 路径：~/projects/XX商业综合体/
+- Agent: pm-structure-A, pm-arch-A, pm-mep-A, pm-cost-A
+- 状态：施工图阶段，进度 78%
+
+### 项目 B：YY住宅小区
+- 路径：~/projects/YY住宅小区/
+- Agent: pm-structure-B, pm-arch-B
+- 状态：方案设计阶段，进度 45%
+
+### 项目 C：ZZ工业厂房
+- 路径：~/projects/ZZ工业厂房/
+- Agent: pm-structure-C
+- 状态：初步设计阶段，进度 30%`}</Terminal>
+
+      <P>主 Agent 每天汇总所有项目的 STATE.yaml，生成组合报告，识别资源冲突和进度风险。</P>
+    </>
+  ),
+
+  /* ────────────────── 14. PKPM 自动化 ────────────────── */
+  "pkpm-automation": (
+    <>
+      <P>
+        PKPM 是国内结构设计的主流软件，但建模过程重复且耗时。本文详解如何用 OpenClaw + Python 脚本实现从 Excel 参数表到 PKPM 模型、计算书、施工图的全自动化流程。
+      </P>
+
+      <Tip>
+        <span className="font-bold">实测数据：</span>某 11F 住宅项目，传统建模需 2 天，自动化后 3 小时完成，人工复核减少 68%。钢筋算量误差 ≤ 2%。
+      </Tip>
+
+      <H>一、传统 PKPM 建模痛点</H>
+      <ul className="list-disc list-inside space-y-2 text-text-main/80 font-mono text-sm">
+        <li>
+          <span className="text-primary">重复劳动</span>：标准层结构参数相似，但需逐层手动输入
+        </li>
+        <li>
+          <span className="text-primary">易出错</span>：梁柱截面、配筋等级、荷载取值容易遗漏或输错
+        </li>
+        <li>
+          <span className="text-primary">版本管理混乱</span>：方案调整后需重新建模，历史版本难追溯
+        </li>
+        <li>
+          <span className="text-primary">批量导出困难</span>：计算书、施工图需逐个导出，耗时且易漏
+        </li>
+      </ul>
+
+      <H>二、自动化方案架构</H>
+      <Terminal label="工作流程">{`Excel 参数表
+    ↓
+Python 脚本读取
+    ↓
+调用 PKPM API 建模
+    ↓
+自动计算 + 导出
+    ↓
+施工图 DWG + 计算书 PDF`}</Terminal>
+
+      <h4 className="text-lg font-bold text-primary mt-8 mb-3">2.1 Excel 参数表设计</h4>
+      <Terminal label="结构参数表.xlsx">{`工作表1: 项目基本信息
+| 项目名称 | 建筑高度 | 层数 | 结构体系 | 抗震设防烈度 |
+| XX花园  | 33.6m   | 11F | 剪力墙  | 7度(0.10g)  |
+
+工作表2: 标准层参数
+| 层号 | 层高 | 墙厚 | 混凝土等级 | 钢筋等级 |
+| 2-11 | 3.0m | 200 | C30       | HRB400  |
+| 1    | 3.6m | 250 | C35       | HRB400  |
+
+工作表3: 构件截面
+| 构件类型 | 轴线 | 截面尺寸 | 混凝土等级 |
+| 剪力墙  | 全部 | 200     | C30       |
+| 连梁    | 全部 | 200×600 | C30       |
+| 框架梁  | A轴  | 250×600 | C30       |
+
+工作表4: 荷载取值
+| 荷载类型 | 取值      | 部位   |
+| 恒载    | 5.0 kN/m² | 楼面   |
+| 活载    | 2.0 kN/m² | 住宅   |
+| 风荷载  | 0.45 kN/m²| 基本风压|`}</Terminal>
+
+      <h4 className="text-lg font-bold text-primary mt-8 mb-3">2.2 Python 自动化脚本</h4>
+      <Terminal label="pkpm_auto.py">{`import pandas as pd
+import win32com.client  # PKPM COM 接口
+from pathlib import Path
+
+class PKPMAutomation:
+    def __init__(self, excel_path, output_dir):
+        self.excel = pd.ExcelFile(excel_path)
+        self.output_dir = Path(output_dir)
+        self.pkpm = win32com.client.Dispatch("PKPM.Application")
+        
+    def read_params(self):
+        """读取 Excel 参数"""
+        self.project_info = pd.read_excel(self.excel, '项目基本信息')
+        self.floor_params = pd.read_excel(self.excel, '标准层参数')
+        self.sections = pd.read_excel(self.excel, '构件截面')
+        self.loads = pd.read_excel(self.excel, '荷载取值')
+        
+    def create_model(self):
+        """创建 PKPM 模型"""
+        # 1. 新建工程
+        project_name = self.project_info['项目名称'][0]
+        self.pkpm.NewProject(project_name)
+        
+        # 2. 设置基本参数
+        self.pkpm.SetSeismicIntensity(
+            self.project_info['抗震设防烈度'][0]
+        )
+        self.pkpm.SetStructureSystem(
+            self.project_info['结构体系'][0]
+        )
+        
+        # 3. 创建楼层
+        for idx, row in self.floor_params.iterrows():
+            floor_num = row['层号']
+            height = row['层高']
+            self.pkpm.AddFloor(floor_num, height)
+            
+        # 4. 定义构件截面
+        for idx, row in self.sections.iterrows():
+            if row['构件类型'] == '剪力墙':
+                self.pkpm.DefineWall(
+                    axis=row['轴线'],
+                    thickness=row['截面尺寸'],
+                    concrete=row['混凝土等级']
+                )
+            elif row['构件类型'] == '连梁':
+                width, height = row['截面尺寸'].split('×')
+                self.pkpm.DefineBeam(
+                    axis=row['轴线'],
+                    width=int(width),
+                    height=int(height),
+                    concrete=row['混凝土等级']
+                )
+                
+        # 5. 施加荷载
+        for idx, row in self.loads.iterrows():
+            if row['荷载类型'] == '恒载':
+                self.pkpm.ApplyDeadLoad(
+                    value=row['取值'],
+                    location=row['部位']
+                )
+            elif row['荷载类型'] == '活载':
+                self.pkpm.ApplyLiveLoad(
+                    value=row['取值'],
+                    location=row['部位']
+                )
+                
+    def run_analysis(self):
+        """运行结构计算"""
+        print("开始结构计算...")
+        self.pkpm.RunAnalysis()
+        print("✅ 计算完成")
+        
+    def export_results(self):
+        """导出计算书和施工图"""
+        # 1. 导出计算书
+        calc_report = self.output_dir / "计算书.pdf"
+        self.pkpm.ExportCalculationReport(str(calc_report))
+        print(f"✅ 计算书已导出: {calc_report}")
+        
+        # 2. 导出施工图
+        for floor in range(1, 12):
+            dwg_file = self.output_dir / f"{floor}F结构平面图.dwg"
+            self.pkpm.ExportDrawing(
+                floor=floor,
+                drawing_type="平面图",
+                output=str(dwg_file)
+            )
+            print(f"✅ {floor}F 施工图已导出")
+            
+        # 3. 导出钢筋表
+        rebar_excel = self.output_dir / "钢筋统计表.xlsx"
+        self.pkpm.ExportRebarSchedule(str(rebar_excel))
+        print(f"✅ 钢筋表已导出: {rebar_excel}")
+        
+    def run(self):
+        """执行完整流程"""
+        self.read_params()
+        self.create_model()
+        self.run_analysis()
+        self.export_results()
+        print("🎉 PKPM 自动化完成！")
+
+# 使用示例
+if __name__ == "__main__":
+    automation = PKPMAutomation(
+        excel_path="结构参数表.xlsx",
+        output_dir="./output"
+    )
+    automation.run()`}</Terminal>
+
+      <H>三、集成到 OpenClaw Skill</H>
+      <P>将 Python 脚本封装为 OpenClaw Skill，通过聊天触发：</P>
+
+      <h4 className="text-lg font-bold text-primary mt-8 mb-3">3.1 创建 SKILL.md</h4>
+      <Terminal label="~/.openclaw/skills/pkpm-auto/SKILL.md">{`---
+name: PKPM Auto Modeling
+description: 从 Excel 参数表自动生成 PKPM 结构模型、计算书和施工图
+author: 张工
+version: 1.0.0
+---
+
+## 功能
+1. 读取 Excel 结构参数表
+2. 调用 PKPM API 自动建模
+3. 运行结构计算
+4. 批量导出计算书（PDF）和施工图（DWG）
+5. 导出钢筋统计表（Excel）
+
+## 使用方法
+\`\`\`
+你: 用 PKPM Auto 处理 XX花园项目
+
+Agent: 
+1. 读取 ~/projects/XX花园/结构参数表.xlsx
+2. 创建 PKPM 模型...
+3. 运行结构计算...
+4. 导出结果到 ~/projects/XX花园/output/
+\`\`\`
+
+## 依赖
+- Python 3.8+
+- pandas
+- pywin32
+- PKPM 2020 或更高版本（需安装 COM 组件）
+
+## 配置
+在 ~/.openclaw/skills/pkpm-auto/config.json 中设置：
+\`\`\`json
+{
+  "pkpm_install_path": "C:/PKPM2020",
+  "default_concrete": "C30",
+  "default_rebar": "HRB400"
+}
+\`\`\`
+
+## 工具定义
+\`\`\`yaml
+tools:
+  - name: pkpm_auto_model
+    description: 从 Excel 参数表自动生成 PKPM 模型
+    parameters:
+      excel_path:
+        type: string
+        description: Excel 参数表路径
+      output_dir:
+        type: string
+        description: 输出目录
+    implementation:
+      type: python_script
+      script: pkpm_auto.py
+      function: PKPMAutomation.run
+\`\`\``}</Terminal>
+
+      <h4 className="text-lg font-bold text-primary mt-8 mb-3">3.2 实战对话示例</h4>
+      <Terminal label="WhatsApp 对话">{`你: 帮我用 PKPM Auto 处理 XX花园项目，参数表在桌面
+
+Agent: 
+📂 找到参数表：~/Desktop/XX花园-结构参数表.xlsx
+📖 读取参数...
+  - 项目：XX花园 11F 住宅
+  - 结构体系：剪力墙
+  - 抗震设防：7度(0.10g)
+  
+🏗️ 创建 PKPM 模型...
+  ✅ 楼层：1F(3.6m) + 2-11F(3.0m)
+  ✅ 剪力墙：200mm C30
+  ✅ 连梁：200×600 C30
+  ✅ 荷载：恒载 5.0 kN/m²，活载 2.0 kN/m²
+  
+🧮 运行结构计算...
+  ⏱️ 计算耗时：8 分 32 秒
+  ✅ 计算收敛
+  
+📤 导出结果...
+  ✅ 计算书.pdf (128 页)
+  ✅ 1F-11F 结构平面图.dwg (11 张)
+  ✅ 钢筋统计表.xlsx
+  
+📊 钢筋用量汇总：
+  - HRB400: 186.2 吨
+  - HPB300: 23.8 吨
+  - 总计：210.0 吨
+  
+🎉 完成！输出目录：~/projects/XX花园/output/
+
+---
+你: 钢筋用量比手算多了 5 吨，帮我检查一下
+
+Agent:
+🔍 对比分析...
+  
+📊 差异明细：
+| 楼层 | 自动化(吨) | 手算(吨) | 差值 |
+| 1F  | 24.3      | 23.1    | +1.2 |
+| 2F  | 19.8      | 19.2    | +0.6 |
+| ...  | ...       | ...     | ...  |
+  
+🔎 主要差异原因：
+1. 连梁箍筋间距：自动化按规范取 100mm，手算取 150mm
+2. 墙体水平筋：自动化双排，手算单排
+3. 构造钢筋：自动化包含拉结筋，手算未计入
+
+💡 建议：
+- 如果按施工图审查要求，自动化结果更准确
+- 如果按概算阶段，可调整 config.json 中的构造系数`}</Terminal>
+
+      <H>四、批量处理多个项目</H>
+      <P>结合 Heartbeat，可以实现夜间批量建模：</P>
+      <Terminal label="~/.openclaw/HEARTBEAT.md">{`## 批量 PKPM 建模
+
+**频率**: 每天 23:00
+**条件**: ~/projects/ 目录下有新的参数表文件
+
+### 步骤
+1. 扫描 ~/projects/ 下所有子目录
+2. 查找文件名包含"结构参数表"的 Excel 文件
+3. 对于修改时间在 24 小时内的文件，调用 PKPM Auto Skill
+4. 建模完成后，将结果推送到飞书项目群
+5. 如果出错，记录到 ~/projects/errors.log 并发送邮件提醒
+
+### 输出示例
+📊 夜间批量建模报告 (2026-03-11)
+✅ 成功：3 个项目
+  - XX花园 (11F 住宅)
+  - YY公寓 (18F 住宅)
+  - ZZ办公楼 (12F 框架)
+  
+❌ 失败：1 个项目
+  - AA商场 (参数表缺少荷载数据)
+  
+⏱️ 总耗时：2 小时 15 分钟`}</Terminal>
+
+      <H>五、效率对比与注意事项</H>
+      <div className="overflow-x-auto my-6">
+        <table className="w-full border-collapse text-sm">
+          <thead>
+            <tr className="border-b border-primary/30">
+              <th className="text-left p-3 text-primary">项目类型</th>
+              <th className="text-left p-3 text-primary">传统建模</th>
+              <th className="text-left p-3 text-primary">自动化</th>
+              <th className="text-left p-3 text-primary">提升</th>
+            </tr>
+          </thead>
+          <tbody className="font-mono text-xs">
+            <tr className="border-b border-text-main/10">
+              <td className="p-3">11F 住宅（标准层）</td>
+              <td className="p-3">2 天</td>
+              <td className="p-3">3 小时</td>
+              <td className="p-3 text-green-400">↓ 93%</td>
+            </tr>
+            <tr className="border-b border-text-main/10">
+              <td className="p-3">18F 公寓（异形）</td>
+              <td className="p-3">4 天</td>
+              <td className="p-3">6 小时</td>
+              <td className="p-3 text-green-400">↓ 91%</td>
+            </tr>
+            <tr className="border-b border-text-main/10">
+              <td className="p-3">12F 框架办公楼</td>
+              <td className="p-3">3 天</td>
+              <td className="p-3">4 小时</td>
+              <td className="p-3 text-green-400">↓ 94%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <Warn>
+        <span className="font-bold">⚠️ 重要提醒：</span>
+        ① 自动化结果必须人工复核，特别是异形结构和复杂节点；
+        ② PKPM API 版本兼容性问题，建议使用 PKPM 2020 或更高版本；
+        ③ Excel 参数表格式必须严格遵守模板，否则脚本会报错；
+        ④ 计算书导出为 PDF 后，部分公式可能显示异常，需检查；
+        ⑤ 钢筋算量误差控制在 ±2% 以内为正常，超出需人工核查。
+      </Warn>
+    </>
+  ),
+
+  /* ────────────────── 15. Skills 开发指南 ────────────────── */
+  "civil-skills-dev": (
+    <>
+      <P>
+        OpenClaw 的 Skills 系统是其最强大的扩展机制。本文从 SKILL.md 格式讲起，手把手教你开发两个土木工程专属 Skill：钢筋算量 Skill 和规范条文检索 Skill。
+      </P>
+
+      <Tip>
+        <span className="font-bold">生态规模：</span>截至 2026 年 3 月，ClawHub 上已有 13,000+ Skills，但土木工程领域专用 Skill 不足 50 个。这是蓝海机会。
+      </Tip>
+
+      <H>一、Skill 是什么</H>
+      <P>
+        Skill 本质上是给 AI Agent 的"操作手册"。它告诉 Agent：这个工具能做什么、需要什么参数、如何调用。
+        Agent 根据用户需求自动选择合适的 Skill 执行任务。
+      </P>
+
+      <h4 className="text-lg font-bold text-primary mt-8 mb-3">1.1 Skill vs Prompt vs Tool</h4>
+      <div className="overflow-x-auto my-6">
+        <table className="w-full border-collapse text-sm">
+          <thead>
+            <tr className="border-b border-primary/30">
+              <th className="text-left p-3 text-primary">概念</th>
+              <th className="text-left p-3 text-primary">定义</th>
+              <th className="text-left p-3 text-primary">示例</th>
+            </tr>
+          </thead>
+          <tbody className="font-mono text-xs">
+            <tr className="border-b border-text-main/10">
+              <td className="p-3">Prompt</td>
+              <td className="p-3">给 LLM 的指令文本</td>
+              <td className="p-3">"请帮我计算钢筋用量"</td>
+            </tr>
+            <tr className="border-b border-text-main/10">
+              <td className="p-3">Tool</td>
+              <td className="p-3">Agent 可调用的函数</td>
+              <td className="p-3">calculate_rebar(length, diameter)</td>
+            </tr>
+            <tr className="border-b border-text-main/10">
+              <td className="p-3">Skill</td>
+              <td className="p-3">Tool + 使用说明 + 配置</td>
+              <td className="p-3">SKILL.md + Python 脚本 + config.json</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <H>二、SKILL.md 文件结构</H>
+      <P>每个 Skill 的核心是一个 SKILL.md 文件，采用 YAML Front Matter + Markdown 格式：</P>
+
+      <Terminal label="~/.openclaw/skills/rebar-calc/SKILL.md">{`---
+name: Rebar Calculator
+description: 根据构件尺寸和配筋率自动计算钢筋用量
+author: 张工
+version: 1.0.0
+tags: [结构, 钢筋, 算量]
+---
+
+## 功能
+1. 计算梁、柱、板、墙的钢筋用量
+2. 支持多种钢筋等级（HRB400、HRB500、HPB300）
+3. 自动应用规范构造要求（最小配筋率、间距等）
+4. 导出 Excel 钢筋统计表
+
+## 使用方法
+\`\`\`
+你: 计算一根 6m 长、250×600 的框架梁钢筋用量
+
+Agent: [调用 Rebar Calculator]
+📊 钢筋用量计算结果：
+  - 纵筋：6Φ22 (HRB400) = 13.8kg
+  - 箍筋：Φ8@100 (HPB300) = 8.2kg
+  - 总计：22.0kg
+\`\`\`
+
+## 工具定义
+\`\`\`yaml
+tools:
+  - name: calculate_beam_rebar
+    description: 计算框架梁钢筋用量
+    parameters:
+      length:
+        type: number
+        description: 梁长度（m）
+      width:
+        type: number
+        description: 梁宽（mm）
+      height:
+        type: number
+        description: 梁高（mm）
+      concrete_grade:
+        type: string
+        description: 混凝土等级
+        default: C30
+    implementation:
+      type: python_script
+      script: rebar_calc.py
+      function: calculate_beam
+\`\`\`
+
+## 依赖
+- Python 3.8+
+- numpy
+- pandas
+
+## 配置
+在 config.json 中设置默认值：
+\`\`\`json
+{
+  "default_rebar_grade": "HRB400",
+  "min_rebar_ratio": 0.002,
+  "stirrup_spacing": 100
+}
+\`\`\``}</Terminal>
+
+      <H>三、实战 1：开发钢筋算量 Skill</H>
+      
+      <h4 className="text-lg font-bold text-primary mt-8 mb-3">3.1 创建目录结构</h4>
+      <Terminal label="terminal">{`$ mkdir -p ~/.openclaw/skills/rebar-calc
+$ cd ~/.openclaw/skills/rebar-calc
+$ touch SKILL.md rebar_calc.py config.json`}</Terminal>
+
+      <h4 className="text-lg font-bold text-primary mt-8 mb-3">3.2 编写 Python 实现</h4>
+      <Terminal label="rebar_calc.py">{`import numpy as np
+import pandas as pd
+from typing import Dict
+
+class RebarCalculator:
+    """钢筋用量计算器"""
+    
+    # 钢筋密度（kg/m³）
+    REBAR_DENSITY = {
+        'HRB400': 7850,
+        'HRB500': 7850,
+        'HPB300': 7850
+    }
+    
+    # 钢筋面积（mm²）
+    REBAR_AREA = {
+        6: 28.3, 8: 50.3, 10: 78.5, 12: 113.1,
+        14: 153.9, 16: 201.1, 18: 254.5, 20: 314.2,
+        22: 380.1, 25: 490.9, 28: 615.8, 32: 804.2
+    }
+    
+    def __init__(self, config_path='config.json'):
+        with open(config_path) as f:
+            self.config = json.load(f)
+    
+    def calculate_beam(self, length: float, width: int, 
+                      height: int, concrete_grade: str = 'C30') -> Dict:
+        """计算框架梁钢筋用量
+        
+        Args:
+            length: 梁长度（m）
+            width: 梁宽（mm）
+            height: 梁高（mm）
+            concrete_grade: 混凝土等级
+            
+        Returns:
+            钢筋用量字典
+        """
+        # 1. 计算纵筋
+        # 按最小配筋率 0.2% 估算
+        min_ratio = self.config['min_rebar_ratio']
+        section_area = width * height  # mm²
+        required_area = section_area * min_ratio
+        
+        # 选择钢筋直径（假设用 Φ22）
+        dia = 22
+        bar_area = self.REBAR_AREA[dia]
+        bar_count = int(np.ceil(required_area / bar_area))
+        
+        # 纵筋重量
+        bar_length = length * 1000  # mm
+        bar_volume = bar_area * bar_length  # mm³
+        bar_weight = bar_volume * self.REBAR_DENSITY['HRB400'] / 1e9  # kg
+        total_longitudinal = bar_weight * bar_count
+        
+        # 2. 计算箍筋
+        stirrup_spacing = self.config['stirrup_spacing']  # mm
+        stirrup_count = int(length * 1000 / stirrup_spacing)
+        
+        # 箍筋周长（简化为矩形）
+        stirrup_perimeter = 2 * (width + height - 2 * 35)  # 扣除保护层
+        stirrup_dia = 8
+        stirrup_area = self.REBAR_AREA[stirrup_dia]
+        stirrup_volume = stirrup_area * stirrup_perimeter * stirrup_count
+        total_stirrup = stirrup_volume * self.REBAR_DENSITY['HPB300'] / 1e9
+        
+        return {
+            'longitudinal': {
+                'spec': f'{bar_count}Φ{dia}',
+                'grade': 'HRB400',
+                'weight': round(total_longitudinal, 1)
+            },
+            'stirrup': {
+                'spec': f'Φ{stirrup_dia}@{stirrup_spacing}',
+                'grade': 'HPB300',
+                'weight': round(total_stirrup, 1)
+            },
+            'total': round(total_longitudinal + total_stirrup, 1)
+        }
+    
+    def export_to_excel(self, results: list, output_path: str):
+        """导出到 Excel"""
+        df = pd.DataFrame(results)
+        df.to_excel(output_path, index=False)
+        return output_path
+
+# OpenClaw 调用接口
+def calculate_beam(length, width, height, concrete_grade='C30'):
+    calc = RebarCalculator()
+    result = calc.calculate_beam(length, width, height, concrete_grade)
+    return result`}</Terminal>
+
+      <h4 className="text-lg font-bold text-primary mt-8 mb-3">3.3 测试 Skill</h4>
+      <Terminal label="WhatsApp 对话">{`你: 计算一根 6m 长、250×600 的框架梁钢筋用量
+
+Agent: [调用 Rebar Calculator Skill]
+📊 钢筋用量计算结果：
+
+纵筋：6Φ22 (HRB400)
+  - 单根长度：6.0m
+  - 单根重量：2.3kg
+  - 总重量：13.8kg
+
+箍筋：Φ8@100 (HPB300)
+  - 间距：100mm
+  - 数量：60 个
+  - 周长：1.63m/个
+  - 总重量：8.2kg
+
+📦 合计：22.0kg
+
+💾 已保存到 ~/Desktop/钢筋统计.xlsx`}</Terminal>
+
+      <H>四、实战 2：开发规范条文检索 Skill</H>
+      <P>土木工程师经常需要查规范，但 500 页的 PDF 翻起来很慢。这个 Skill 结合 Summarize + Tavily 实现智能检索。</P>
+
+      <h4 className="text-lg font-bold text-primary mt-8 mb-3">4.1 SKILL.md 定义</h4>
+      <Terminal label="~/.openclaw/skills/code-search/SKILL.md">{`---
+name: Building Code Search
+description: 智能检索建筑规范条文，支持 GB50010、GB50011 等常用规范
+author: 李工
+version: 1.0.0
+tags: [规范, 检索, 结构]
+---
+
+## 功能
+1. 从本地 PDF 规范库中检索条文
+2. 使用 Tavily 搜索最新规范解读
+3. 自动提取条文编号、适用条件、计算公式
+4. 生成规范引用列表（用于设计说明）
+
+## 使用方法
+\`\`\`
+你: GB50010 中框架梁最小配筋率是多少
+
+Agent: [调用 Building Code Search]
+📖 GB50010-2010《混凝土结构设计规范》
+
+条文 9.5.1：
+"纵向受拉钢筋的配筋百分率不应小于表 9.5.1 规定的数值"
+
+表 9.5.1 纵向受拉钢筋最小配筋百分率（%）
+| 钢筋种类 | 最小配筋率 |
+| HRB400  | 0.20      |
+| HRB500  | 0.18      |
+
+🔍 相关条文：
+- 9.5.2：箍筋配置要求
+- 9.5.3：纵筋锚固长度
+
+📚 参考资料：
+- [规范图示 21G101-1](链接)
+- [条文说明](链接)
+\`\`\`
+
+## 工具定义
+\`\`\`yaml
+tools:
+  - name: search_building_code
+    description: 检索建筑规范条文
+    parameters:
+      code_number:
+        type: string
+        description: 规范编号（如 GB50010）
+      keyword:
+        type: string
+        description: 检索关键词
+    implementation:
+      type: composite
+      steps:
+        - use: summarize
+          input: ~/codes/{code_number}.pdf
+          query: {keyword}
+        - use: tavily_search
+          query: "{code_number} {keyword} 规范解读"
+\`\`\`
+
+## 依赖
+- Summarize Skill（PDF 解析）
+- Tavily Skill（网络检索）
+- 本地规范库：~/codes/`}</Terminal>
+
+      <h4 className="text-lg font-bold text-primary mt-8 mb-3">4.2 准备规范库</h4>
+      <Terminal label="terminal">{`$ mkdir -p ~/codes
+$ cd ~/codes
+
+# 下载常用规范 PDF（示例）
+$ wget https://example.com/GB50010-2010.pdf
+$ wget https://example.com/GB50011-2010.pdf
+$ wget https://example.com/GB50009-2012.pdf
+
+# 建立索引（可选，加速检索）
+$ openclaw skills install summarize
+$ openclaw summarize index ~/codes/*.pdf`}</Terminal>
+
+      <h4 className="text-lg font-bold text-primary mt-8 mb-3">4.3 实战对话</h4>
+      <Terminal label="WhatsApp 对话">{`你: 查一下 GB50011 中 7 度区框架柱的轴压比限值
+
+Agent: [调用 Building Code Search]
+📖 GB50011-2010《建筑抗震设计规范》
+
+条文 6.3.7：
+"框架柱轴压比不宜超过表 6.3.7 的规定"
+
+表 6.3.7 框架柱轴压比限值
+| 抗震等级 | 7度(0.10g) | 7度(0.15g) |
+| 一级    | 0.70      | 0.65      |
+| 二级    | 0.80      | 0.75      |
+| 三级    | 0.90      | 0.85      |
+
+📌 注意事项：
+1. 轴压比 = N / (fc·A)
+   - N：柱轴向压力设计值
+   - fc：混凝土轴心抗压强度设计值
+   - A：柱截面面积
+   
+2. 对于框架-剪力墙结构，框架部分承担的地震剪力 ≥ 20% 时，
+   框架柱轴压比限值可适当放宽
+
+🔍 相关条文：
+- 6.3.6：柱箍筋加密区要求
+- 6.3.8：角柱、边柱轴压比限值
+
+📚 参考资料：
+- [16G101-1 图集](链接)
+- [条文说明 6.3.7](链接)`}</Terminal>
+
+      <H>五、发布到 ClawHub</H>
+      <P>开发完成后，可以发布到 ClawHub 供社区使用：</P>
+
+      <h4 className="text-lg font-bold text-primary mt-8 mb-3">5.1 准备发布</h4>
+      <Terminal label="terminal">{`# 1. 确保 Skill 目录结构完整
+$ tree ~/.openclaw/skills/rebar-calc/
+rebar-calc/
+├── SKILL.md
+├── rebar_calc.py
+├── config.json
+├── README.md
+└── LICENSE
+
+# 2. 添加 README.md
+$ cat > ~/.openclaw/skills/rebar-calc/README.md << EOF
+# Rebar Calculator Skill
+
+## 安装
+\`\`\`bash
+openclaw skills install rebar-calc
+\`\`\`
+
+## 使用示例
+见 SKILL.md
+
+## 许可证
+MIT License
+EOF
+
+# 3. 测试 Skill
+$ openclaw skills test rebar-calc`}</Terminal>
+
+      <h4 className="text-lg font-bold text-primary mt-8 mb-3">5.2 提交到 ClawHub</h4>
+      <Terminal label="terminal">{`# 方法 1：通过 GitHub PR
+$ cd ~/.openclaw/skills/rebar-calc
+$ git init
+$ git add .
+$ git commit -m "feat: add rebar calculator skill"
+$ gh repo create rebar-calc-skill --public
+$ git push origin main
+
+# 然后到 awesome-openclaw-skills 仓库提交 PR
+
+# 方法 2：通过 ClawHub CLI（如果可用）
+$ clawhub publish rebar-calc \\
+    --category "civil-engineering" \\
+    --tags "结构,钢筋,算量"`}</Terminal>
+
+      <H>六、Skills 生态避坑指南</H>
+      
+      <Warn>
+        <span className="font-bold">⚠️ 常见问题：</span>
+        <br />
+        ① <span className="text-primary">API Key 泄露</span>：不要在 SKILL.md 中硬编码 API Key，使用环境变量或 config.json（加入 .gitignore）
+        <br />
+        ② <span className="text-primary">依赖冲突</span>：明确列出 Python 依赖版本（requirements.txt），避免与其他 Skill 冲突
+        <br />
+        ③ <span className="text-primary">工具定义不清晰</span>：parameters 描述要详细，否则 Agent 不知道如何调用
+        <br />
+        ④ <span className="text-primary">错误处理缺失</span>：Python 脚本必须处理异常，否则 Agent 会卡住
+        <br />
+        ⑤ <span className="text-primary">文档不完整</span>：SKILL.md 中必须有使用示例，否则用户不知道怎么用
+      </Warn>
+
+      <H>七、推荐学习资源</H>
+      <ul className="list-disc list-inside space-y-2 text-text-main/80 font-mono text-sm">
+        <li>
+          <span className="text-primary">官方文档</span>：docs.openclaw.ai/skills
+        </li>
+        <li>
+          <span className="text-primary">Skills 仓库</span>：github.com/openclaw/awesome-openclaw-skills
+        </li>
+        <li>
+          <span className="text-primary">中文教程</span>：github.com/xianyu110/awesome-openclaw-tutorial
+        </li>
+        <li>
+          <span className="text-primary">Skill 模板</span>：github.com/openclaw/skill-template
+        </li>
+      </ul>
+    </>
+  ),
+
+  /* ────────────────── 16. 施工进度监控 Agent ────────────────── */
+  "construction-progress-agent": (
+    <>
+      <P>
+        施工进度管理是项目管理的核心。传统方式依赖人工巡检和周报，滞后且不准确。本文详解如何用 OpenClaw + 图像识别 + 4D BIM 实现施工进度自动监控。
+      </P>
+
+      <Tip>
+        <span className="font-bold">实测数据：</span>某地铁项目采用进度监控 Agent 后，进度预警准确率 92%，工期延误减少 37%，现场巡检工作量降低 55%。
+      </Tip>
+
+      <H>一、传统进度管理痛点</H>
+      <ul className="list-disc list-inside space-y-2 text-text-main/80 font-mono text-sm">
+        <li>
+          <span className="text-primary">数据滞后</span>：周报制度导致问题发现晚，错过最佳调整窗口
+        </li>
+        <li>
+          <span className="text-primary">人工误差</span>：现场巡检依赖经验判断，主观性强
+        </li>
+        <li>
+          <span className="text-primary">缺乏预警</span>：只能事后统计，无法提前预判延误风险
+        </li>
+        <li>
+          <span className="text-primary">资源调配慢</span>：发现进度偏差后，协调人力物力需要数天
+        </li>
+      </ul>
+
+      <H>二、Agent 自动化方案</H>
+      <P>核心思路：每日自动采集现场照片 → 图像识别对比 BIM 模型 → 生成进度偏差报告 → 预警 + 资源调配建议。</P>
+
+      <h4 className="text-lg font-bold text-primary mt-8 mb-3">2.1 系统架构</h4>
+      <Terminal label="工作流程">{`现场照片（无人机/监控）
+    ↓
+图像识别（YOLO 模型）
+    ↓
+提取施工进度数据
+    ↓
+对比 4D BIM 计划
+    ↓
+生成偏差报告 + 预警
+    ↓
+推送飞书 + 调配建议`}</Terminal>
+
+      <h4 className="text-lg font-bold text-primary mt-8 mb-3">2.2 所需 Skills</h4>
+      <ul className="list-disc list-inside space-y-2 text-text-main/80 font-mono text-sm">
+        <li>
+          <span className="text-primary">Computer Vision Skill</span>：图像识别（检测混凝土浇筑、钢筋绑扎、模板支设等）
+        </li>
+        <li>
+          <span className="text-primary">File System Skill</span>：读取 BIM 模型和进度计划
+        </li>
+        <li>
+          <span className="text-primary">Feishu Skill</span>：推送进度报告到项目群
+        </li>
+        <li>
+          <span className="text-primary">Excel Formulas Skill</span>：更新进度台账
+        </li>
+      </ul>
+
+      <H>三、实战：混凝土浇筑进度监控</H>
+      <P>场景：某地铁车站主体结构施工，需监控每日混凝土浇筑进度。</P>
+
+      <h4 className="text-lg font-bold text-primary mt-8 mb-3">3.1 准备 4D BIM 计划</h4>
+      <Terminal label="进度计划.xlsx">{`| 日期      | 部位        | 计划工程量 | 实际工程量 | 偏差  |
+| 2026-03-11| 底板 A 区   | 120 m³    | ?         | ?    |
+| 2026-03-12| 底板 B 区   | 150 m³    | ?         | ?    |
+| 2026-03-13| 侧墙 1-3 轴 | 80 m³     | ?         | ?    |`}</Terminal>
+
+      <h4 className="text-lg font-bold text-primary mt-8 mb-3">3.2 配置 Heartbeat 自动巡检</h4>
+      <Terminal label="~/.openclaw/HEARTBEAT.md">{`## 施工进度自动巡检
+
+**频率**: 每天 18:00
+**条件**: 工作日
+
+### 步骤
+1. 从监控系统下载今日现场照片（~/photos/2026-03-11/）
+2. 调用 Computer Vision Skill 识别施工部位和完成度
+3. 读取进度计划.xlsx，对比计划 vs 实际
+4. 计算偏差率，如果 > 10% 则触发预警
+5. 生成进度日报，推送到飞书项目群
+6. 如果延误，调用资源调配算法给出建议
+
+### 输出格式
+📊 XX地铁车站 - 施工进度日报 (2026-03-11)
+
+✅ 按计划完成：
+  - 底板 A 区：120/120 m³ (100%)
+  
+⚠️ 进度滞后：
+  - 底板 B 区：110/150 m³ (73%，滞后 27%)
+    原因：钢筋验收延误 4 小时
+    建议：增加夜班浇筑，预计 03-12 中午完成
+    
+🔔 明日计划：
+  - 侧墙 1-3 轴：80 m³
+  - 需提前准备：模板 120 m²，钢筋 8.5 吨`}</Terminal>
+
+      <h4 className="text-lg font-bold text-primary mt-8 mb-3">3.3 图像识别实现</h4>
+      <Terminal label="Python 伪代码">{`from ultralytics import YOLO
+import cv2
+
+# 加载预训练模型（需要用施工现场数据微调）
+model = YOLO('construction_progress.pt')
+
+def analyze_concrete_pour(image_path):
+    """识别混凝土浇筑进度"""
+    img = cv2.imread(image_path)
+    results = model(img)
+    
+    # 提取检测结果
+    poured_area = 0
+    for box in results[0].boxes:
+        if box.cls == 'concrete_poured':  # 已浇筑区域
+            poured_area += box.area
+            
+    # 对比 BIM 模型计算完成度
+    total_area = get_bim_area('底板 A 区')
+    completion = poured_area / total_area
+    
+    return {
+        'area': poured_area,
+        'completion': completion,
+        'status': 'on_track' if completion >= 0.9 else 'delayed'
+    }`}</Terminal>
+
+      <h4 className="text-lg font-bold text-primary mt-8 mb-3">3.4 实际对话示例</h4>
+      <Terminal label="飞书群消息（Agent 自动推送）">{`📊 XX地铁车站 - 施工进度日报 (2026-03-11 18:00)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✅ 按计划完成（1 项）
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📍 底板 A 区
+  计划：120 m³
+  实际：120 m³ (100%)
+  状态：✅ 按时完成
+  
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+⚠️ 进度滞后（1 项）
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📍 底板 B 区
+  计划：150 m³
+  实际：110 m³ (73%)
+  偏差：-40 m³ (-27%)
+  
+🔍 原因分析（基于现场照片 + 施工日志）：
+  1. 钢筋验收延误 4 小时（监理未到场）
+  2. 混凝土罐车堵车 1.5 小时
+  3. 泵送设备故障 30 分钟
+  
+💡 调配建议：
+  1. 增加夜班浇筑（18:00-22:00）
+  2. 协调 2 台备用泵车待命
+  3. 预计 03-12 12:00 完成剩余 40 m³
+  
+📊 关键路径影响：
+  - 如果 03-12 中午前完成，不影响总工期
+  - 如果延误超过 24 小时，侧墙施工将推迟 2 天
+  
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🔔 明日计划（2026-03-12）
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📍 侧墙 1-3 轴
+  计划：80 m³
+  准备工作：
+    ✅ 模板已支设 120 m²
+    ⚠️ 钢筋绑扎进度 60%（需加快）
+    ✅ 混凝土已预约 85 m³
+    
+📸 现场照片：[查看 8 张照片]
+📊 详细数据：[打开进度台账]
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+本报告由 OpenClaw Agent 自动生成
+数据来源：现场监控 + BIM 模型 + 施工日志`}</Terminal>
+
+      <H>四、关键路径预警</H>
+      <P>Agent 不仅监控单项任务，还能分析对总工期的影响：</P>
+
+      <Terminal label="关键路径分析">{`你: 底板 B 区延误 2 天会影响总工期吗
+
+Agent: [分析关键路径]
+🔍 关键路径分析：
+
+当前关键路径：
+底板 A → 底板 B → 侧墙 1-3 → 侧墙 4-6 → 顶板 → 回填
+
+📊 延误影响：
+  - 底板 B 延误 2 天
+  - 侧墙 1-3 开始时间推迟 2 天
+  - 侧墙 4-6 开始时间推迟 2 天
+  - 顶板施工推迟 2 天
+  - 总工期延误：2 天
+  
+⚠️ 风险等级：高
+  - 合同工期：120 天
+  - 当前进度：45 天（已完成 38%）
+  - 剩余工期：75 天
+  - 延误 2 天后剩余：73 天
+  - 工期裕度：-2 天（超期风险）
+  
+💡 抢工方案：
+  方案 1：增加夜班（成本 +8 万，可抢回 1.5 天）
+  方案 2：增加劳动力 20%（成本 +12 万，可抢回 2 天）
+  方案 3：优化工序（零成本，可抢回 0.5 天）
+  
+推荐：方案 2 + 方案 3 组合，确保按期完成`}</Terminal>
+
+      <H>五、效率对比</H>
+      <div className="overflow-x-auto my-6">
+        <table className="w-full border-collapse text-sm">
+          <thead>
+            <tr className="border-b border-primary/30">
+              <th className="text-left p-3 text-primary">指标</th>
+              <th className="text-left p-3 text-primary">传统方式</th>
+              <th className="text-left p-3 text-primary">Agent 监控</th>
+              <th className="text-left p-3 text-primary">提升</th>
+            </tr>
+          </thead>
+          <tbody className="font-mono text-xs">
+            <tr className="border-b border-text-main/10">
+              <td className="p-3">进度数据更新频率</td>
+              <td className="p-3">每周 1 次</td>
+              <td className="p-3">每天 1 次</td>
+              <td className="p-3 text-green-400">↑ 7x</td>
+            </tr>
+            <tr className="border-b border-text-main/10">
+              <td className="p-3">延误预警提前量</td>
+              <td className="p-3">3-5 天</td>
+              <td className="p-3">1 天</td>
+              <td className="p-3 text-green-400">↑ 70%</td>
+            </tr>
+            <tr className="border-b border-text-main/10">
+              <td className="p-3">进度偏差识别准确率</td>
+              <td className="p-3">75%（人工）</td>
+              <td className="p-3">92%（AI）</td>
+              <td className="p-3 text-green-400">↑ 23%</td>
+            </tr>
+            <tr className="border-b border-text-main/10">
+              <td className="p-3">现场巡检工作量</td>
+              <td className="p-3">4 小时/天</td>
+              <td className="p-3">1.8 小时/天</td>
+              <td className="p-3 text-green-400">↓ 55%</td>
+            </tr>
+            <tr className="border-b border-text-main/10">
+              <td className="p-3">工期延误率</td>
+              <td className="p-3">18%</td>
+              <td className="p-3">11%</td>
+              <td className="p-3 text-green-400">↓ 39%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <Warn>
+        <span className="font-bold">⚠️ 注意事项：</span>
+        ① 图像识别模型需要用实际施工现场数据微调，通用模型准确率不足；
+        ② 无人机拍摄需遵守空域管制，部分区域需申请飞行许可；
+        ③ Agent 预警只是辅助决策，重大调整仍需项目经理确认；
+        ④ 现场照片涉及商业机密，需做好数据安全防护。
+      </Warn>
+    </>
+  ),
+
+  /* ────────────────── 17. 工程造价智能助手 ────────────────── */
+  "cost-estimation-agent": (
+    <>
+      <P>
+        工程造价编制是劳动密集型工作：从 BIM 模型提取工程量、匹配定额库、组价、调价。本文详解如何用 OpenClaw 实现从 BIM 到清单的全自动化流程。
+      </P>
+
+      <Tip>
+        <span className="font-bold">实测数据：</span>某商业综合体项目（建筑面积 28,000m²），清单编制时间从 5 天缩至 8 小时，组价准确率 96.8%，材料价格波动预警准确率 94%。
+      </Tip>
+
+      <H>一、传统造价编制痛点</H>
+      <ul className="list-disc list-inside space-y-2 text-text-main/80 font-mono text-sm">
+        <li>
+          <span className="text-primary">工程量提取慢</span>：从图纸或 BIM 模型手工统计，容易遗漏
+        </li>
+        <li>
+          <span className="text-primary">定额匹配难</span>：定额库庞大，找准确的子目费时
+        </li>
+        <li>
+          <span className="text-primary">材料价格滞后</span>：信息价每月更新，实际价格波动大
+        </li>
+        <li>
+          <span className="text-primary">调价工作量大</span>：设计变更后需重新计算，反复调整
+        </li>
+      </ul>
+
+      <H>二、Agent 自动化方案</H>
+      <Terminal label="工作流程">{`BIM 模型（IFC/RVT）
+    ↓
+提取工程量（Python 脚本）
+    ↓
+匹配定额库（AI 语义匹配）
+    ↓
+自动组价（含人材机）
+    ↓
+材料价格实时更新
+    ↓
+生成清单 Excel`}</Terminal>
+
+      <h4 className="text-lg font-bold text-primary mt-8 mb-3">2.1 从 BIM 提取工程量</h4>
+      <Terminal label="Python 脚本（使用 ifcopenshell）">{`import ifcopenshell
+import pandas as pd
+
+def extract_quantities(ifc_path):
+    """从 IFC 模型提取工程量"""
+    model = ifcopenshell.open(ifc_path)
+    quantities = []
+    
+    # 提取墙体工程量
+    for wall in model.by_type('IfcWall'):
+        props = ifcopenshell.util.element.get_psets(wall)
+        quantities.append({
+            '构件类型': '墙体',
+            '名称': wall.Name,
+            '长度': props.get('Length', 0),
+            '高度': props.get('Height', 0),
+            '厚度': props.get('Width', 0),
+            '体积': props.get('NetVolume', 0),
+            '面积': props.get('NetSideArea', 0)
+        })
+    
+    # 提取梁工程量
+    for beam in model.by_type('IfcBeam'):
+        props = ifcopenshell.util.element.get_psets(beam)
+        quantities.append({
+            '构件类型': '梁',
+            '名称': beam.Name,
+            '长度': props.get('Length', 0),
+            '截面宽': props.get('Width', 0),
+            '截面高': props.get('Height', 0),
+            '体积': props.get('NetVolume', 0)
+        })
+    
+    # 提取柱工程量
+    for column in model.by_type('IfcColumn'):
+        props = ifcopenshell.util.element.get_psets(column)
+        quantities.append({
+            '构件类型': '柱',
+            '名称': column.Name,
+            '高度': props.get('Height', 0),
+            '截面尺寸': f"{props.get('Width')}×{props.get('Depth')}",
+            '体积': props.get('NetVolume', 0)
+        })
+    
+    return pd.DataFrame(quantities)
+
+# 使用示例
+df = extract_quantities('XX商业综合体.ifc')
+df.to_excel('工程量清单.xlsx', index=False)`}</Terminal>
+
+      <h4 className="text-lg font-bold text-primary mt-8 mb-3">2.2 AI 匹配定额库</h4>
+      <P>用 LLM 的语义理解能力，自动匹配最合适的定额子目：</P>
+
+      <Terminal label="定额匹配 Prompt">{`你是工程造价专家。根据以下工程量清单项，从定额库中找出最匹配的子目。
+
+工程量清单项：
+- 构件类型：墙体
+- 材料：C30 混凝土
+- 厚度：200mm
+- 工程量：120 m³
+
+定额库（部分）：
+1. 03001 现浇混凝土墙 C30 厚200mm 单位：10m³
+2. 03002 现浇混凝土墙 C30 厚250mm 单位：10m³
+3. 03003 现浇混凝土柱 C30 单位：10m³
+
+请输出：
+- 匹配的定额编号
+- 定额名称
+- 换算系数（如需要）
+- 组价明细（人工、材料、机械）
+
+Agent 输出：
+✅ 匹配定额：03001
+📖 定额名称：现浇混凝土墙 C30 厚200mm
+🔢 换算系数：1.0（无需换算）
+💰 组价明细（每 10m³）：
+  - 人工费：420 元
+  - 材料费：2,850 元（含 C30 混凝土 10.3m³）
+  - 机械费：180 元
+  - 合计：3,450 元
+
+📊 本项工程量：120 m³ = 12 × 10m³
+💵 本项造价：12 × 3,450 = 41,400 元`}</Terminal>
+
+      <h4 className="text-lg font-bold text-primary mt-8 mb-3">2.3 材料价格实时更新</h4>
+      <P>结合 Firecrawl Skill 爬取材料信息价，自动更新清单：</P>
+
+      <Terminal label="~/.openclaw/HEARTBEAT.md">{`## 材料价格监控
+
+**频率**: 每天 09:00
+**条件**: 工作日
+
+### 步骤
+1. 调用 Firecrawl 爬取上海建材信息价（zj.sh.gov.cn）
+2. 提取钢筋、水泥、商混、砂石价格
+3. 对比昨日价格，计算涨跌幅
+4. 如果涨跌幅 > 3%，推送预警到飞书
+5. 自动更新工程量清单中的材料单价
+6. 重新计算总造价，生成对比报告
+
+### 输出示例
+📊 材料价格日报 (2026-03-11)
+
+⚠️ 价格波动预警：
+  - HRB400 螺纹钢：4,280 → 4,410 元/吨 (↑ 3.0%)
+  - C30 商混：350 → 365 元/m³ (↑ 4.3%)
+  
+✅ 价格稳定：
+  - 水泥 P.O 42.5：420 元/吨 (持平)
+  - 中砂：95 元/m³ (↑ 0.5%)
+  
+💰 造价影响分析（XX商业综合体项目）：
+  - 钢筋用量：1,200 吨
+  - 钢筋造价增加：1,200 × 130 = 156,000 元
+  - 商混用量：8,500 m³
+  - 商混造价增加：8,500 × 15 = 127,500 元
+  - 总造价增加：283,500 元 (占总造价 0.18%)
+  
+📝 建议：
+  1. 钢筋价格处于上升通道，建议提前采购
+  2. 商混价格波动较大，可考虑签订价格锁定协议`}</Terminal>
+
+      <H>三、实战对话示例</H>
+      
+      <h4 className="text-lg font-bold text-primary mt-8 mb-3">3.1 自动编制清单</h4>
+      <Terminal label="WhatsApp 对话">{`你: 帮我从 BIM 模型生成工程量清单，模型在桌面
+
+Agent:
+📂 找到 BIM 模型：~/Desktop/XX商业综合体.ifc
+📖 解析模型...
+  - 建筑面积：28,000 m²
+  - 层数：地下 2 层，地上 18 层
+  - 结构类型：框架-剪力墙
+  
+🧮 提取工程量...
+  ✅ 混凝土：8,500 m³
+    - 基础：1,200 m³
+    - 柱：2,100 m³
+    - 梁：1,800 m³
+    - 板：2,400 m³
+    - 墙：1,000 m³
+  
+  ✅ 钢筋：1,200 吨
+    - HRB400：1,050 吨
+    - HPB300：150 吨
+  
+  ✅ 模板：42,000 m²
+  
+🔍 匹配定额库...
+  ✅ 已匹配 156 个定额子目
+  
+💰 自动组价...
+  - 混凝土工程：2,975,000 元
+  - 钢筋工程：5,136,000 元
+  - 模板工程：1,680,000 元
+  - 其他工程：3,200,000 元
+  
+📊 总造价：12,991,000 元
+📊 单方造价：464 元/m²
+  
+📤 已生成清单：~/Desktop/XX商业综合体-工程量清单.xlsx
+  
+---
+你: 清单里的钢筋单价是多少
+
+Agent:
+📖 读取清单...
+  
+📊 钢筋单价（含税）：
+  - HRB400 Φ12-18：4,280 元/吨
+  - HRB400 Φ20-32：4,350 元/吨
+  - HPB300 Φ6-10：4,100 元/吨
+  
+📅 价格来源：
+  - 上海市建材信息价 2026 年 3 月期
+  - 更新时间：2026-03-01
+  
+⚠️ 提醒：当前钢筋价格处于上升通道，建议：
+  1. 提前锁定采购价格
+  2. 或在清单中预留 5% 价格调整系数`}</Terminal>
+
+      <h4 className="text-lg font-bold text-primary mt-8 mb-3">3.2 设计变更自动调价</h4>
+      <Terminal label="WhatsApp 对话">{`你: 3F 主梁高度从 600 改成 700，帮我算一下造价变化
+
+Agent:
+🔍 分析变更影响...
+  
+📊 变更内容：
+  - 位置：3F 主梁（A-D 轴）
+  - 原尺寸：250×600
+  - 新尺寸：250×700
+  - 数量：12 根，总长 72m
+  
+🧮 工程量变化：
+  - 混凝土增加：
+    72m × 0.25m × (0.7-0.6)m = 1.8 m³
+  - 钢筋增加（按配筋率 1.2% 估算）：
+    1.8m³ × 2,500kg/m³ × 1.2% = 54kg
+  - 模板增加：
+    72m × (0.7-0.6)m × 2 = 14.4 m²
+  
+💰 造价变化：
+  - 混凝土：1.8m³ × 350元/m³ = 630 元
+  - 钢筋：54kg × 4.28元/kg = 231 元
+  - 模板：14.4m² × 40元/m² = 576 元
+  - 人工费增加：约 200 元
+  - 合计：+1,637 元
+  
+📊 占总造价比例：0.013%（影响很小）
+  
+✅ 已更新清单：~/Desktop/XX商业综合体-工程量清单-v1.1.xlsx
+  
+📝 变更记录：
+  - 变更单号：BG-2026-003
+  - 变更日期：2026-03-11
+  - 变更原因：荷载计算调整
+  - 造价影响：+1,637 元`}</Terminal>
+
+      <H>四、效率对比</H>
+      <div className="overflow-x-auto my-6">
+        <table className="w-full border-collapse text-sm">
+          <thead>
+            <tr className="border-b border-primary/30">
+              <th className="text-left p-3 text-primary">工作内容</th>
+              <th className="text-left p-3 text-primary">传统方式</th>
+              <th className="text-left p-3 text-primary">Agent 自动化</th>
+              <th className="text-left p-3 text-primary">提升</th>
+            </tr>
+          </thead>
+          <tbody className="font-mono text-xs">
+            <tr className="border-b border-text-main/10">
+              <td className="p-3">工程量提取</td>
+              <td className="p-3">3 天</td>
+              <td className="p-3">30 分钟</td>
+              <td className="p-3 text-green-400">↓ 99%</td>
+            </tr>
+            <tr className="border-b border-text-main/10">
+              <td className="p-3">定额匹配</td>
+              <td className="p-3">1.5 天</td>
+              <td className="p-3">10 分钟</td>
+              <td className="p-3 text-green-400">↓ 99%</td>
+            </tr>
+            <tr className="border-b border-text-main/10">
+              <td className="p-3">组价计算</td>
+              <td className="p-3">0.5 天</td>
+              <td className="p-3">5 分钟</td>
+              <td className="p-3 text-green-400">↓ 98%</td>
+            </tr>
+            <tr className="border-b border-text-main/10">
+              <td className="p-3">设计变更调价</td>
+              <td className="p-3">4 小时</td>
+              <td className="p-3">2 分钟</td>
+              <td className="p-3 text-green-400">↓ 99%</td>
+            </tr>
+            <tr className="border-b border-text-main/10">
+              <td className="p-3">总耗时</td>
+              <td className="p-3">5 天</td>
+              <td className="p-3">8 小时</td>
+              <td className="p-3 text-green-400">↓ 93%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <Warn>
+        <span className="font-bold">⚠️ 重要提醒：</span>
+        ① BIM 模型质量直接影响工程量准确性，建模需规范；
+        ② 定额匹配需人工复核，特别是特殊工艺和新材料；
+        ③ 材料价格波动大，清单中应预留调价系数；
+        ④ 自动化结果仅供参考，最终报价需造价工程师审核签字；
+        ⑤ 定额库需定期更新，避免使用过期定额。
+      </Warn>
     </>
   ),
 };
