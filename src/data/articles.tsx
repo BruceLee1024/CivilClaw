@@ -491,6 +491,410 @@ $ ls ~/.openclaw/skills/`}</Terminal>
         </Concept>
       </div>
 
+      <H>八、常见问题排查</H>
+      <P>
+        安装和使用 OpenClaw 过程中会遇到各种问题。以下是社区反馈最多的坑，按出现频率排列。
+        遇到问题时，建议先运行 <Code>openclaw doctor</Code> 自动诊断。
+      </P>
+
+      {/* ── 8.1 安装阶段 ── */}
+      <h4 className="text-lg font-bold text-primary mt-8 mb-3">8.1 安装阶段问题</h4>
+
+      <Concept title="❶ npm install 超时 / 依赖下载失败（国内用户最常见）">
+        国内网络访问 npm 官方源速度极慢，经常卡在进度条不动。
+        <br /><br />
+        <span className="text-primary font-bold">解决：</span>设置国内镜像源后重新安装：
+        <br />
+        <code className="text-primary bg-black px-1.5 py-0.5 rounded text-xs">
+          npm config set registry https://registry.npmmirror.com
+        </code>
+        <br />
+        <code className="text-primary bg-black px-1.5 py-0.5 rounded text-xs">
+          npm install -g openclaw@latest
+        </code>
+        <br /><br />
+        如果镜像源仍然卡住，可临时开代理：
+        <br />
+        macOS/Linux：
+        <code className="text-primary bg-black px-1.5 py-0.5 rounded text-xs">
+          export https_proxy=http://127.0.0.1:7890
+        </code>
+        <br />
+        Windows PowerShell：
+        <code className="text-primary bg-black px-1.5 py-0.5 rounded text-xs">
+          $env:https_proxy = &quot;http://127.0.0.1:7890&quot;
+        </code>
+      </Concept>
+
+      <Concept title="❷ Node.js 版本过低——各种莫名其妙的语法错误">
+        OpenClaw 要求 Node.js ≥ 22。如果你使用 Node 18 或 16，
+        会遇到 SyntaxError、依赖安装失败等不明确的报错。
+        <br /><br />
+        <span className="text-primary font-bold">诊断：</span>
+        <code className="text-primary bg-black px-1.5 py-0.5 rounded text-xs">node --version</code>
+        <br />
+        <span className="text-primary font-bold">解决：</span>
+        推荐用 nvm 管理版本——
+        <code className="text-primary bg-black px-1.5 py-0.5 rounded text-xs">nvm install 22 &amp;&amp; nvm use 22</code>，
+        然后清缓存重装：
+        <code className="text-primary bg-black px-1.5 py-0.5 rounded text-xs">npm cache clean --force &amp;&amp; npm install -g openclaw</code>
+      </Concept>
+
+      <Concept title="❸ 安装后输入 openclaw 提示 &quot;command not found&quot;">
+        npm 全局 bin 目录没有加入系统 PATH。
+        <br /><br />
+        <span className="text-primary font-bold">解决：</span>
+        先查路径：
+        <code className="text-primary bg-black px-1.5 py-0.5 rounded text-xs">npm config get prefix</code>，
+        然后将 &lt;prefix&gt;/bin 加入 PATH：
+        <br />
+        macOS/Linux 在 ~/.zshrc 或 ~/.bashrc 中添加：
+        <br />
+        <code className="text-primary bg-black px-1.5 py-0.5 rounded text-xs">
+          export PATH=&quot;$(npm config get prefix)/bin:$PATH&quot;
+        </code>
+        <br />
+        Windows：将 %AppData%\npm 添加到系统环境变量 PATH 中，然后重启 PowerShell。
+      </Concept>
+
+      <Concept title="❹ 一键安装脚本卡住不动（curl | bash 无响应）">
+        安装脚本会启动 TUI 终端界面。在无头服务器（headless VPS）或某些终端模拟器中 TUI 会卡死。
+        <br /><br />
+        <span className="text-primary font-bold">解决：</span>
+        Ctrl+C 退出，改用 npm 手动安装：
+        <code className="text-primary bg-black px-1.5 py-0.5 rounded text-xs">npm install -g openclaw</code>，
+        然后运行
+        <code className="text-primary bg-black px-1.5 py-0.5 rounded text-xs">openclaw doctor --non-interactive</code>
+        完成初始配置。
+        <br /><br />
+        也可以加 --verbose 获取更多信息：
+        <code className="text-primary bg-black px-1.5 py-0.5 rounded text-xs">
+          curl -fsSL https://openclaw.ai/install.sh | bash -s -- --verbose
+        </code>
+      </Concept>
+
+      <Concept title="❺ Linux 缺少编译工具——原生模块构建失败">
+        很多 npm 依赖需要编译原生 C++ 模块。缺少 build-essential 会导致安装失败或运行时崩溃。
+        <br /><br />
+        <span className="text-primary font-bold">解决：</span>
+        <br />
+        Debian/Ubuntu：
+        <code className="text-primary bg-black px-1.5 py-0.5 rounded text-xs">
+          sudo apt install build-essential git python3
+        </code>
+        <br />
+        Fedora/RHEL：
+        <code className="text-primary bg-black px-1.5 py-0.5 rounded text-xs">
+          sudo dnf install gcc gcc-c++ make git
+        </code>
+      </Concept>
+
+      <Concept title="❻ Windows 提示找不到 git">
+        OpenClaw 安装过程需要 git。Windows 用户需要先安装 Git for Windows
+        （git-scm.com），安装时勾选 &quot;Add to PATH&quot;，然后重启 PowerShell 再运行安装脚本。
+      </Concept>
+
+      <Concept title="❼ onboard 向导后 openclaw.json 损坏或不完整">
+        Onboard 向导有时不会填写所有必要字段，导致后续各种诡异报错。
+        <br /><br />
+        <span className="text-primary font-bold">诊断：</span>
+        <code className="text-primary bg-black px-1.5 py-0.5 rounded text-xs">
+          python3 -m json.tool ~/.openclaw/openclaw.json
+        </code>
+        &nbsp;（检查 JSON 语法）
+        <br />
+        <span className="text-primary font-bold">解决：</span>
+        运行
+        <code className="text-primary bg-black px-1.5 py-0.5 rounded text-xs">openclaw doctor --fix</code>
+        自动修复。如果问题严重，备份旧配置后重新 onboard：
+        <code className="text-primary bg-black px-1.5 py-0.5 rounded text-xs">
+          cp ~/.openclaw/openclaw.json ~/.openclaw/openclaw.json.bak &amp;&amp; openclaw onboard
+        </code>
+      </Concept>
+
+      {/* ── 8.2 Gateway 网关问题 ── */}
+      <h4 className="text-lg font-bold text-primary mt-8 mb-3">8.2 Gateway 网关问题</h4>
+
+      <Concept title="❶ 端口冲突——EADDRINUSE / &quot;another gateway instance is already listening&quot;">
+        Gateway 默认占用 18789 端口。如果端口被其他程序占用，启动会失败。
+        <br /><br />
+        <span className="text-primary font-bold">诊断：</span>
+        <br />
+        macOS/Linux：
+        <code className="text-primary bg-black px-1.5 py-0.5 rounded text-xs">
+          lsof -i :18789
+        </code>
+        <br />
+        Windows：
+        <code className="text-primary bg-black px-1.5 py-0.5 rounded text-xs">
+          netstat -ano | findstr :18789
+        </code>
+        <br /><br />
+        <span className="text-primary font-bold">解决：</span>
+        停止占用进程，或换端口：
+        <code className="text-primary bg-black px-1.5 py-0.5 rounded text-xs">
+          openclaw config set gateway.port 18790
+        </code>
+      </Concept>
+
+      <Concept title="❷ 残留 PID 锁文件——Gateway 崩溃后无法重启">
+        Gateway 异常退出时会残留 ~/.openclaw/gateway.pid 锁文件，新进程拒绝启动。
+        <br /><br />
+        <span className="text-primary font-bold">解决：</span>
+        先确认没有真正运行的进程：
+        <code className="text-primary bg-black px-1.5 py-0.5 rounded text-xs">ps aux | grep openclaw</code>，
+        确认无进程后删除锁文件：
+        <code className="text-primary bg-black px-1.5 py-0.5 rounded text-xs">rm ~/.openclaw/gateway.pid</code>，
+        然后重启。
+      </Concept>
+
+      <Concept title="❸ systemd / launchd 服务启动失败——环境变量丢失">
+        手动运行正常，但作为系统服务启动失败。最常见原因是 HOME 和 API Key 环境变量没传给服务进程。
+        <br /><br />
+        <span className="text-primary font-bold">解决（Linux systemd）：</span>
+        在服务单元文件中显式设置：
+        <br />
+        <code className="text-primary bg-black px-1.5 py-0.5 rounded text-xs">
+          Environment=HOME=/home/youruser
+        </code>
+        <br />
+        <code className="text-primary bg-black px-1.5 py-0.5 rounded text-xs">
+          Environment=OPENCLAW_LOG_LEVEL=info
+        </code>
+        <br /><br />
+        <span className="text-primary font-bold">解决（macOS launchd）：</span>
+        确保 plist 文件中包含正确的 EnvironmentVariables 字典。
+      </Concept>
+
+      <Concept title="❹ WebSocket 1006 错误——Gateway 启动后立即崩溃">
+        通常是某个插件或 Skill 加载时崩溃导致。
+        <br /><br />
+        <span className="text-primary font-bold">解决：</span>
+        在配置中临时禁用非核心插件，确认 Gateway 稳定后逐个启用，定位问题插件。
+        用 <code className="text-primary bg-black px-1.5 py-0.5 rounded text-xs">
+        openclaw logs --follow</code> 查看崩溃时的详细日志。
+      </Concept>
+
+      <Concept title="❺ &quot;Gateway start blocked: set gateway.mode=local&quot;">
+        Gateway 模式未设为本地。
+        <br /><br />
+        <span className="text-primary font-bold">解决：</span>
+        在 openclaw.json 中设置 gateway.mode 为 &quot;local&quot;，或运行：
+        <code className="text-primary bg-black px-1.5 py-0.5 rounded text-xs">openclaw configure</code>
+      </Concept>
+
+      {/* ── 8.3 模型与 API 问题 ── */}
+      <h4 className="text-lg font-bold text-primary mt-8 mb-3">8.3 模型与 API 问题</h4>
+
+      <Concept title="❶ 401 Unauthorized——API Key 错误或过期">
+        最常见的模型调用失败。复制 Key 时多了空格、Key 过期、或填错了 provider 都会导致 401。
+        <br /><br />
+        <span className="text-primary font-bold">解决：</span>
+        去模型提供商控制台（如 platform.deepseek.com）重新生成 Key，粘贴时确保无多余空格。
+        用
+        <code className="text-primary bg-black px-1.5 py-0.5 rounded text-xs">openclaw models status</code>
+        检查认证状态。
+      </Concept>
+
+      <Concept title="❷ 429 Too Many Requests——频率限制">
+        发送请求太频繁，被模型提供商限流。Anthropic 用户还可能遇到 &quot;extra usage required for long context&quot;。
+        <br /><br />
+        <span className="text-primary font-bold">解决：</span>
+        等待一段时间后重试。长期方案：配置 fallback 模型（多个 provider 自动切换），
+        或调低并发设置。Anthropic 长上下文问题需要在 Anthropic 控制台开启 Extra Usage 或禁用 context1m 参数。
+      </Concept>
+
+      <Concept title="❸ &quot;Model not allowed&quot;——模型白名单未更新">
+        添加新模型后忘记将其加入 agents.defaults.models 白名单。当该列表非空时，只有列表中的模型可以使用。
+        <br /><br />
+        <span className="text-primary font-bold">解决：</span>
+        <code className="text-primary bg-black px-1.5 py-0.5 rounded text-xs">
+          openclaw config get agents.defaults.models
+        </code>
+        检查白名单，添加新模型 Key 即可。
+      </Concept>
+
+      <Concept title="❹ &quot;All models failed&quot;——所有模型均失败">
+        通常是多个 provider 的 Key 都有问题，或网络不通。
+        <br /><br />
+        <span className="text-primary font-bold">解决：</span>
+        运行
+        <code className="text-primary bg-black px-1.5 py-0.5 rounded text-xs">openclaw models status</code>
+        逐一检查每个 provider 的连接状态。国内用户优先确保 DeepSeek（国内直连）可用作 fallback。
+      </Concept>
+
+      <Concept title="❺ 国产模型调用超时——baseUrl 或网络问题">
+        确认 baseUrl 填写正确（注意末尾不要多 /），确认 API Key 对应的是正确的平台。
+        常见正确地址：
+        <br />
+        DeepSeek：https://api.deepseek.com/v1
+        <br />
+        通义千问：https://dashscope.aliyuncs.com/compatible-mode/v1
+        <br />
+        Kimi：https://api.moonshot.cn/v1
+        <br />
+        GLM-4：https://open.bigmodel.cn/api/paas/v4
+      </Concept>
+
+      {/* ── 8.4 消息平台连接问题 ── */}
+      <h4 className="text-lg font-bold text-primary mt-8 mb-3">8.4 消息平台连接问题</h4>
+
+      <Concept title="❶ WhatsApp 频繁断线 / 重复要求扫码">
+        WhatsApp QR Code 配对是最不稳定的连接方式，会话与手机登录状态绑定。
+        <br /><br />
+        <span className="text-primary font-bold">解决：</span>
+        运行
+        <code className="text-primary bg-black px-1.5 py-0.5 rounded text-xs">
+          openclaw channels status --probe
+        </code>
+        检查连接状态。如果凭证损坏，清除凭证目录后重新配对：
+        <code className="text-primary bg-black px-1.5 py-0.5 rounded text-xs">
+          rm -rf ~/.openclaw/channels/whatsapp/ &amp;&amp; openclaw platform pair whatsapp
+        </code>
+        <br />
+        注意：国内使用 WhatsApp 需要代理网络环境。
+      </Concept>
+
+      <Concept title="❷ Telegram Bot 在线但不回复消息">
+        三个常见原因：
+        <br />
+        ① 隐私模式（Privacy Mode）开启——Bot 在群组中只能收到 @mention 或 / 命令。
+        在 BotFather 中发送 /setprivacy 关闭。
+        <br />
+        ② Bot Token 错误或过期——日志中会出现 401 错误。
+        <br />
+        ③ 网络问题——服务器无法访问 api.telegram.org，
+        用 curl 测试：
+        <code className="text-primary bg-black px-1.5 py-0.5 rounded text-xs">
+          curl -s https://api.telegram.org/bot&lt;TOKEN&gt;/getMe
+        </code>
+      </Concept>
+
+      <Concept title="❸ Discord Bot 在线但不响应">
+        最常见原因：在 Discord 开发者后台未开启 &quot;Message Content Intent&quot;（Privileged Gateway Intents 下）。
+        没有这个权限，Bot 无法读取消息内容。
+        <br /><br />
+        另外检查：是否设置了 requireMention，以及用户是否完成了 DM 配对
+        （<code className="text-primary bg-black px-1.5 py-0.5 rounded text-xs">
+        openclaw pairing list discord</code>）。
+      </Concept>
+
+      <Concept title="❹ 飞书 / 钉钉 / 企业微信不响应（国内用户）">
+        ① 确认 onboard 时域名选择了中国区域（feishu.cn 而非 larksuite.com）。
+        <br />
+        ② 确认应用权限全部勾选并发布了版本（飞书需要发布才生效）。
+        <br />
+        ③ 重启 Gateway 后用
+        <code className="text-primary bg-black px-1.5 py-0.5 rounded text-xs">
+          openclaw channels test feishu
+        </code>
+        测试连接。
+      </Concept>
+
+      <Concept title="❺ 消息已连接但收不到回复——配对 / 白名单问题">
+        OpenClaw 的 DM 需要发送者先完成配对（pairing）。如果设置了 allowFrom 白名单，
+        白名单外的用户消息会被静默丢弃。
+        <br /><br />
+        <span className="text-primary font-bold">诊断：</span>
+        <code className="text-primary bg-black px-1.5 py-0.5 rounded text-xs">
+          openclaw pairing list --channel &lt;channel&gt;
+        </code>
+        检查待批准的配对请求，
+        <code className="text-primary bg-black px-1.5 py-0.5 rounded text-xs">
+          openclaw logs --follow
+        </code>
+        查看是否有 &quot;pairing request&quot; 或 &quot;blocked&quot; 日志。
+      </Concept>
+
+      {/* ── 8.5 升级与配置问题 ── */}
+      <h4 className="text-lg font-bold text-primary mt-8 mb-3">8.5 升级与配置兼容性</h4>
+
+      <Concept title="❶ 升级后出现 &quot;unsupported schema node&quot; / 配置报错">
+        OpenClaw 版本更新可能改变配置 Key 名称。升级后应立即运行
+        <code className="text-primary bg-black px-1.5 py-0.5 rounded text-xs">openclaw doctor</code>
+        检查配置兼容性。
+        <br /><br />
+        <span className="text-primary font-bold">建议：</span>
+        升级前备份：
+        <code className="text-primary bg-black px-1.5 py-0.5 rounded text-xs">
+          cp -r ~/.openclaw ~/.openclaw.backup.$(date +%Y%m%d)
+        </code>
+        <br />
+        优先用 CLI 修改配置（
+        <code className="text-primary bg-black px-1.5 py-0.5 rounded text-xs">
+          openclaw config set/get
+        </code>
+        ）而非手动编辑 JSON，CLI 会自动处理 schema 变更。
+      </Concept>
+
+      <Concept title="❷ 修改配置后不生效——哪些需要重启？">
+        模型参数微调、超时设置等可以热重载。但以下改动必须重启 Gateway：
+        添加/删除 model provider、修改端口/绑定设置、改变 agent 结构、认证配置变更。
+        <br /><br />
+        不确定时就重启：
+        <code className="text-primary bg-black px-1.5 py-0.5 rounded text-xs">openclaw gateway restart</code>
+      </Concept>
+
+      <Concept title="❸ 本地 Ollama 模型调用失败">
+        模型名称必须与 provider 配置中的完全一致（区分大小写）。
+        用 <code className="text-primary bg-black px-1.5 py-0.5 rounded text-xs">ollama list</code>
+        确认已下载的模型名称，确保和 openclaw.json 中的 model id 完全匹配。
+      </Concept>
+
+      {/* ── 8.6 内存 / 记忆问题 ── */}
+      <h4 className="text-lg font-bold text-primary mt-8 mb-3">8.6 记忆丢失与上下文重置</h4>
+
+      <Concept title="Agent 好像忘记了之前说过的话">
+        OpenClaw 的记忆分两层：① 会话内聊天记录（临时，重启 Gateway 即丢失）；
+        ② 持久记忆文件（~/.openclaw/workspace/MEMORY.md 等，跨会话保留）。
+        <br /><br />
+        长对话中，上下文窗口会被压缩（compaction），早期信息可能被丢弃。
+        <br /><br />
+        <span className="text-primary font-bold">解决：</span>
+        重要信息主动让 Agent 写入 MEMORY.md。使用多个小的主题记忆文件（memory/*.md）
+        比一个巨大的 MEMORY.md 检索效果更好。
+      </Concept>
+
+      <H>九、诊断工具速查</H>
+      <P>遇到任何问题，按以下顺序排查：</P>
+      <Terminal label="terminal - 诊断命令速查">{`# 1. 一键诊断（最有用，输出可直接发到社区求助）
+$ openclaw status --all
+
+# 2. 自动修复常见问题（权限、缺失目录、配置错误）
+$ openclaw doctor --fix
+
+# 3. 实时查看日志（复现问题时开着）
+$ openclaw logs --follow
+
+# 4. 检查 Gateway 状态
+$ openclaw gateway status
+
+# 5. 检查模型认证状态
+$ openclaw models status
+
+# 6. 检查消息平台连接
+$ openclaw channels status --probe
+
+# 7. 检查定时任务
+$ openclaw cron status
+
+# 8. 开启 debug 级别日志（详细排查用）
+$ OPENCLAW_LOG_LEVEL=debug openclaw gateway run
+
+# 9. 聊天中使用 /debug 命令（需先在配置中设置 commands.debug: true）
+# /debug show    ← 查看运行时配置
+# /debug set key=value  ← 临时修改配置
+
+# 10. 清除缓存（万能重置）
+$ openclaw cache clear --all`}</Terminal>
+
+      <Warn>
+        <span className="font-bold">⚠️ 求助前请准备：</span>
+        OS 版本、Node.js 版本（node --version）、OpenClaw 版本（openclaw --version）、
+        openclaw status --all 输出、以及 debug 级别日志片段。
+        发到 GitHub Discussions 或 Discord 社区，越具体越快得到回复。
+      </Warn>
+
       <H>参考链接</H>
       <ul className="list-disc list-inside space-y-2 text-text-main/80 font-mono text-sm">
         <li>
@@ -504,7 +908,22 @@ $ ls ~/.openclaw/skills/`}</Terminal>
           官方文档：<span className="text-primary">docs.openclaw.ai</span>
         </li>
         <li>
+          官方中文文档：<span className="text-primary">docs.openclaw.ai/zh-CN</span>
+        </li>
+        <li>
+          官方 FAQ：<span className="text-primary">docs.openclaw.ai/zh-CN/help/faq</span>
+        </li>
+        <li>
+          官方故障排查：<span className="text-primary">docs.openclaw.ai/gateway/troubleshooting</span>
+        </li>
+        <li>
           Skill 市场：<span className="text-primary">clawhub.ai</span>
+        </li>
+        <li>
+          GitHub Discussions（提问）：<span className="text-primary">github.com/openclaw/openclaw/discussions</span>
+        </li>
+        <li>
+          Discord 社区：<span className="text-primary">discord.com/invite/clawd</span>
         </li>
       </ul>
     </>

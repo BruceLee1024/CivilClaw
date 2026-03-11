@@ -12,7 +12,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="zh" className="dark">
+    <html lang="zh" className="dark" suppressHydrationWarning>
       <head>
         <link
           href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap"
@@ -23,7 +23,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="font-display antialiased min-h-screen overflow-x-hidden">
+      <body className="font-display antialiased min-h-screen overflow-x-hidden" suppressHydrationWarning>
         {children}
       </body>
     </html>
