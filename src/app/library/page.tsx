@@ -94,6 +94,17 @@ const resources = [
     featured: true,
     url: "https://help.aliyun.com/zh/simple-application-server/use-cases/quickly-deploy-and-use-openclaw",
   },
+  {
+    type: "教程",
+    typeColor: "border-accent-geo text-accent-geo",
+    downloads: "精选",
+    icon: "school",
+    iconColor: "text-accent-geo",
+    title: "OpenClaw 从入门到精通指南",
+    subtitle: "完整教程 | 从零开始到实战应用",
+    featured: true,
+    url: "https://my.feishu.cn/docx/P6zsdsgYco6i4XxLeIccvlpvnQe",
+  },
 ];
 
 export default function LibraryPage() {
