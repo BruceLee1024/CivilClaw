@@ -125,14 +125,14 @@ export default function LandingPage() {
       <section className="relative w-full min-h-[100svh] flex flex-col justify-center overflow-hidden">
         {/* Decorative layers */}
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-[20%] left-[5%] w-[700px] h-[700px] bg-primary/[0.04] rounded-full blur-[160px]" />
-          <div className="absolute bottom-[10%] right-[5%] w-[500px] h-[500px] bg-accent-struct/[0.04] rounded-full blur-[140px]" />
-          <div className="absolute top-[60%] left-[50%] w-[400px] h-[400px] bg-accent-geo/[0.03] rounded-full blur-[120px]" />
+          <div className="absolute top-[20%] left-[5%] w-[min(700px,80vw)] h-[min(700px,80vw)] bg-primary/[0.04] rounded-full blur-[160px]" />
+          <div className="absolute bottom-[10%] right-[5%] w-[min(500px,60vw)] h-[min(500px,60vw)] bg-accent-struct/[0.04] rounded-full blur-[140px]" />
+          <div className="absolute top-[60%] left-[50%] w-[min(400px,50vw)] h-[min(400px,50vw)] bg-accent-geo/[0.03] rounded-full blur-[120px]" />
           {/* Horizontal accent line */}
           <div className="absolute top-1/2 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
         </div>
 
-        <div className="relative max-w-[90rem] mx-auto w-full px-6 lg:px-16 py-24 lg:py-0">
+        <div className="relative max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-16 py-24 lg:py-0">
           <div className="grid lg:grid-cols-2 gap-16 lg:gap-20 items-center">
             {/* Left: Text */}
             <div className="flex flex-col gap-8">
@@ -185,8 +185,8 @@ export default function LandingPage() {
                   <div className="w-3 h-3 rounded-full bg-accent-geo/80" />
                   <span className="ml-4 text-text-muted font-mono text-xs tracking-widest">terminal</span>
                 </div>
-                <div className="p-6 lg:p-8 overflow-x-auto">
-                  <pre className="font-mono text-sm leading-loose">
+                <div className="p-4 sm:p-6 lg:p-8 overflow-x-auto max-w-full">
+                  <pre className="font-mono text-xs sm:text-sm leading-loose max-w-full">
 <span className="text-text-muted"># 一键安装</span>
 {"\n"}<span className="text-accent-geo">$</span> <span className="text-text-main">curl -fsSL https://openclaw.ai/install.sh | bash</span>
 {"\n"}
