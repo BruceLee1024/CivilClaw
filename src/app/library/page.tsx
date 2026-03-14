@@ -127,14 +127,22 @@ export default function LibraryPage() {
             </div>
             <input
               className="block w-full h-full pl-16 pr-6 py-4 bg-surface border-2 border-border-color rounded-full text-text-main text-xl md:text-2xl font-bold placeholder:text-border-color focus:ring-0 focus:border-primary focus:outline-none transition-colors shadow-lg"
-              placeholder="搜索数据库..."
+              placeholder="搜索资源..."
               type="text"
+              onChange={(e) => {
+                const query = e.target.value.toLowerCase();
+                const cards = document.querySelectorAll('[data-resource-card]');
+                cards.forEach((card) => {
+                  const title = card.getAttribute('data-title')?.toLowerCase() || '';
+                  const subtitle = card.getAttribute('data-subtitle')?.toLowerCase() || '';
+                  if (title.includes(query) || subtitle.includes(query)) {
+                    (card as HTMLElement).style.display = '';
+                  } else {
+                    (card as HTMLElement).style.display = 'none';
+                  }
+                });
+              }}
             />
-            <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
-              <button className="bg-primary text-background-dark font-mono font-bold text-sm px-6 py-3 rounded-full hover:bg-primary/90 transition-colors uppercase tracking-widest h-[80%] mr-1">
-                查询
-              </button>
-            </div>
           </div>
           <div className="flex flex-wrap items-center justify-center gap-3">
             {categories.map((cat) => (
@@ -158,6 +166,9 @@ export default function LibraryPage() {
               <Wrapper
                 key={i}
                 {...wrapperProps}
+                data-resource-card
+                data-title={r.title}
+                data-subtitle={r.subtitle}
                 className={`bg-surface border rounded-2xl overflow-hidden group cursor-pointer flex flex-col items-center text-center gap-4 p-6 hover:border-primary/50 transition-all hover:-translate-y-1 ${
                   r.featured ? "border-primary/40" : "border-border-color"
                 }`}

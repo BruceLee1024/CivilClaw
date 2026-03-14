@@ -1,6 +1,9 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { articlesMeta, articleContent } from "@/data/articles/index";
+import ShareButtons from "@/components/ShareButtons";
+import ReadingProgress from "@/components/ReadingProgress";
+import TableOfContents from "@/components/TableOfContents";
 
 export function generateStaticParams() {
   return articlesMeta.map((a) => ({ id: a.id }));
@@ -24,6 +27,7 @@ export default async function BlogArticlePage({
 
   return (
     <>
+      <ReadingProgress />
       {/* Top Navigation */}
       <header className="sticky top-0 z-50 flex items-center justify-between whitespace-nowrap border-b border-border-color bg-background-dark/90 backdrop-blur px-6 lg:px-10 py-3 w-full">
         <div className="flex items-center gap-4 text-text-main">
@@ -46,8 +50,10 @@ export default async function BlogArticlePage({
       </header>
 
       {/* Main Content */}
-      <main className="w-full px-6 lg:px-20 py-12 flex flex-col gap-12 relative z-10">
-        <article className="flex flex-col gap-6 max-w-4xl mx-auto w-full">
+      <main className="w-full px-6 lg:px-20 py-12 relative z-10">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
+          {/* Article */}
+          <article className="flex flex-col gap-6 lg:col-span-8">
           <div className="flex items-center gap-3 mb-2">
             <span
               className={`inline-flex items-center justify-center px-4 py-1 rounded-full border bg-black text-xs font-mono uppercase tracking-widest shadow-[0_0_10px_rgba(255,0,122,0.2)] ${article.tagClass}`}
@@ -83,12 +89,27 @@ export default async function BlogArticlePage({
 
           {/* Article Content */}
           <div className="mt-4 space-y-6">{content}</div>
+
+          {/* Share Buttons */}
+          <div className="mt-8 pt-6 border-t border-border-color">
+            <ShareButtons 
+              title={article.title} 
+              url={`https://civilclaw.com/blog/${id}`} 
+            />
+          </div>
         </article>
 
-        <hr className="border-border-color my-4 max-w-4xl mx-auto w-full" />
+        {/* Table of Contents - Desktop */}
+        <aside className="hidden lg:block lg:col-span-4">
+          <TableOfContents />
+        </aside>
+      </div>
+
+      <div className="max-w-7xl mx-auto mt-12 flex flex-col gap-12">
+        <hr className="border-border-color" />
 
         {/* Author Bio */}
-        <div className="max-w-4xl mx-auto w-full bg-surface rounded-[2rem] border border-border-color p-6 flex items-center gap-6">
+        <div className="bg-surface rounded-[2rem] border border-border-color p-6 flex items-center gap-6">
           <div className="w-16 h-16 rounded-full bg-surface-hover border border-border-color flex items-center justify-center shrink-0">
             <span className="material-symbols-outlined text-3xl text-primary">
               engineering
@@ -103,7 +124,7 @@ export default async function BlogArticlePage({
         </div>
 
         {/* Related Articles */}
-        <div className="max-w-4xl mx-auto w-full">
+        <div className="w-full">
           <h2 className="text-xl font-bold text-text-main mb-6 uppercase tracking-wider">
             相关文章
           </h2>
@@ -126,6 +147,7 @@ export default async function BlogArticlePage({
             ))}
           </div>
         </div>
+      </div>
       </main>
     </>
   );

@@ -1,4 +1,7 @@
+"use client";
+
 import type { ReactNode } from "react";
+import { useState } from "react";
 
 export function Code({ children }: { children: string }) {
   return (
@@ -15,12 +18,30 @@ export function Terminal({
   label: string;
   children: string;
 }) {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(children);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   return (
-    <div className="my-4 rounded-xl overflow-hidden border border-border-color bg-surface-darker shadow-2xl">
+    <div className="my-4 rounded-xl overflow-hidden border border-border-color bg-surface-darker shadow-2xl group">
       <div className="flex items-center justify-between px-4 py-2 border-b border-border-color bg-[#151515]">
         <span className="text-text-muted font-mono text-xs tracking-widest">
           {label}
         </span>
+        <button
+          onClick={handleCopy}
+          className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-surface-hover border border-border-color text-text-muted hover:text-primary hover:border-primary/50 transition-colors text-xs font-mono opacity-0 group-hover:opacity-100"
+          title="复制代码"
+        >
+          <span className="material-symbols-outlined text-sm">
+            {copied ? "check" : "content_copy"}
+          </span>
+          {copied ? "已复制" : "复制"}
+        </button>
       </div>
       <div className="p-4 overflow-x-auto">
         <pre className="font-mono text-sm leading-relaxed text-[#A9B7C6]">

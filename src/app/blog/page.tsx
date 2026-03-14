@@ -202,14 +202,11 @@ export default function BlogPage() {
               </div>
             )}
 
-            {filtered.length > 0 && (
+            {filtered.length > 10 && (
               <div className="py-4 flex justify-center">
-                <button className="font-mono text-sm text-text-muted hover:text-primary uppercase tracking-widest flex items-center gap-2 transition-colors">
-                  <span className="material-symbols-outlined text-[18px]">
-                    expand_more
-                  </span>
-                  加载更多文章
-                </button>
+                <p className="font-mono text-sm text-text-muted">
+                  共 {filtered.length} 篇文章
+                </p>
               </div>
             )}
           </div>

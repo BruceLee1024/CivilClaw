@@ -2,8 +2,48 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "CivilClaw — 土木工程师的 AI Agent 内容集合站",
-  description: "面向土木工程师的 OpenClaw 中文内容站：安装教程、Skill 开发、国产模型配置、Gateway 架构详解与云端部署指南。GitHub 286K+ Stars 开源 AI Agent 框架。",
+  title: {
+    default: "CivilClaw - OpenClaw for 土木工程",
+    template: "%s | CivilClaw"
+  },
+  description: "土木工程师的 AI Agent 工具箱。基于 OpenClaw 的自托管 AI 助手，支持规范查询、造价算量、施工管理、BIM 自动化。ClawHub 社区 13,729+ Skills，专为土木人精选。",
+  keywords: ["OpenClaw", "土木工程", "AI Agent", "结构设计", "造价算量", "施工管理", "BIM", "PKPM", "规范查询", "工程自动化"],
+  authors: [{ name: "CivilClaw Team" }],
+  creator: "CivilClaw",
+  publisher: "CivilClaw",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  metadataBase: new URL("https://civilclaw.com"),
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    locale: "zh_CN",
+    url: "https://civilclaw.com",
+    title: "CivilClaw - OpenClaw for 土木工程",
+    description: "土木工程师的 AI Agent 工具箱。基于 OpenClaw 的自托管 AI 助手，支持规范查询、造价算量、施工管理、BIM 自动化。",
+    siteName: "CivilClaw",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "CivilClaw - OpenClaw for 土木工程",
+    description: "土木工程师的 AI Agent 工具箱",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
 };
 
 export default function RootLayout({
