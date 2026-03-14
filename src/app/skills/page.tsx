@@ -313,6 +313,32 @@ export default function SkillsPage() {
                     <code className="text-[10px] font-mono text-text-muted bg-black px-3 py-1.5 rounded-lg block overflow-x-auto">
                       npx clawhub@latest install {skill.slug}
                     </code>
+
+                    {/* Download button */}
+                    <div className="flex items-center gap-2 mt-1">
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          window.open(`https://clawhub.ai/skills/${skill.slug}/download`, '_blank');
+                        }}
+                        className="flex-1 px-3 py-2 bg-primary/10 border border-primary/30 text-primary rounded-lg text-xs font-mono font-bold hover:bg-primary/20 transition-colors flex items-center justify-center gap-1.5"
+                      >
+                        <span className="material-symbols-outlined text-sm">download</span>
+                        下载 SKILL.md
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          navigator.clipboard.writeText(`npx clawhub@latest install ${skill.slug}`);
+                        }}
+                        className="px-3 py-2 bg-surface-hover border border-border-color text-text-muted rounded-lg text-xs font-mono hover:text-primary hover:border-primary/50 transition-colors flex items-center gap-1"
+                        title="复制安装命令"
+                      >
+                        <span className="material-symbols-outlined text-sm">content_copy</span>
+                      </button>
+                    </div>
                   </a>
                 ))}
               </div>
