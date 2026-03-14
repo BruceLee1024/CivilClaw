@@ -256,7 +256,7 @@ export default function SkillsPage() {
       <main className="flex-1 w-full px-6 py-8 lg:px-10 lg:py-12 flex flex-col gap-12">
         {/* Hero */}
         <section className="w-full max-w-5xl mx-auto flex flex-col gap-6">
-          <h1 className="text-4xl font-bold text-text-main uppercase tracking-tight border-l-4 border-primary pl-4">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-text-main uppercase tracking-tight border-l-4 border-primary pl-3 sm:pl-4">
             虾饲料仓库
           </h1>
           <p className="text-text-muted max-w-2xl text-sm leading-relaxed">
@@ -276,14 +276,14 @@ export default function SkillsPage() {
         <section className="flex flex-wrap items-center justify-center gap-3 w-full max-w-5xl mx-auto">
           <button
             onClick={() => setSelectedCategory(null)}
-            className={`px-5 py-2.5 rounded-full border flex items-center gap-2 transition-all ${
+            className={`px-3 sm:px-5 py-2 sm:py-2.5 rounded-full border flex items-center gap-1.5 sm:gap-2 transition-all ${
               selectedCategory === null
                 ? "border-primary bg-primary/20 text-primary"
                 : "border-border-color bg-surface hover:border-primary/50 text-text-muted"
             }`}
           >
-            <span className="material-symbols-outlined text-lg">apps</span>
-            <span className="font-mono text-xs font-bold uppercase tracking-wider">
+            <span className="material-symbols-outlined text-base sm:text-lg">apps</span>
+            <span className="font-mono text-[10px] sm:text-xs font-bold uppercase tracking-wider">
               全部 ({skills.length})
             </span>
           </button>
@@ -293,16 +293,16 @@ export default function SkillsPage() {
               <button
                 key={cat.id}
                 onClick={() => setSelectedCategory(cat.id)}
-                className={`px-5 py-2.5 rounded-full border flex items-center gap-2 transition-all ${
+                className={`px-3 sm:px-5 py-2 sm:py-2.5 rounded-full border flex items-center gap-1.5 sm:gap-2 transition-all ${
                   selectedCategory === cat.id
                     ? `${cat.borderColor} ${cat.bgColor} ${cat.color}`
                     : "border-border-color bg-surface hover:border-primary/50"
                 }`}
               >
-                <span className={`material-symbols-outlined text-lg ${selectedCategory === cat.id ? cat.color : "text-text-muted"}`}>
+                <span className={`material-symbols-outlined text-base sm:text-lg ${selectedCategory === cat.id ? cat.color : "text-text-muted"}`}>
                   {cat.icon}
                 </span>
-                <span className={`font-mono text-xs font-bold uppercase tracking-wider ${selectedCategory === cat.id ? cat.color : "text-text-muted"}`}>
+                <span className={`font-mono text-[10px] sm:text-xs font-bold uppercase tracking-wider ${selectedCategory === cat.id ? cat.color : "text-text-muted"}`}>
                   {cat.label} ({count})
                 </span>
               </button>
@@ -375,7 +375,7 @@ export default function SkillsPage() {
                           e.stopPropagation();
                           window.open(`https://clawhub.ai/skills/${skill.slug}/download`, '_blank');
                         }}
-                        className="flex-1 px-3 py-2 bg-primary/10 border border-primary/30 text-primary rounded-lg text-xs font-mono font-bold hover:bg-primary/20 transition-colors flex items-center justify-center gap-1.5"
+                        className="flex-1 px-2 sm:px-3 py-2 bg-primary/10 border border-primary/30 text-primary rounded-lg text-[10px] sm:text-xs font-mono font-bold hover:bg-primary/20 transition-colors flex items-center justify-center gap-1 sm:gap-1.5"
                       >
                         <span className="material-symbols-outlined text-sm">download</span>
                         下载 SKILL.md

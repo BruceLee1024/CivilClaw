@@ -75,8 +75,8 @@ export default async function BlogArticlePage({
       </header>
 
       {/* Main Content */}
-      <main className="w-full px-6 lg:px-20 py-12 relative z-10">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <main className="w-full px-4 sm:px-6 lg:px-20 py-8 sm:py-12 relative z-10">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
           {/* Article */}
           <article className="flex flex-col gap-6 lg:col-span-8">
           {/* Breadcrumb */}
@@ -101,7 +101,7 @@ export default async function BlogArticlePage({
             )}
           </div>
 
-          <h1 className="text-4xl lg:text-5xl font-bold leading-tight tracking-tight text-text-main">
+          <h1 className="text-2xl sm:text-3xl lg:text-5xl font-bold leading-tight tracking-tight text-text-main">
             {article.title}
           </h1>
 

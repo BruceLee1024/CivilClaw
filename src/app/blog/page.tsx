@@ -81,7 +81,7 @@ export default function BlogPage() {
       <Header />
       <main className="w-full flex flex-col pt-8 pb-32 px-6">
         <div className="max-w-5xl mx-auto w-full mb-8">
-          <h1 className="text-4xl font-bold uppercase tracking-tight text-text-main border-l-4 border-primary pl-4">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-text-main uppercase tracking-tight border-l-4 border-primary pl-3 sm:pl-4">
             养虾手册
           </h1>
         </div>

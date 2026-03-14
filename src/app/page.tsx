@@ -141,36 +141,36 @@ export default function LandingPage() {
                 Peter Steinberger 创建 · 开源基金会维护 · MIT License
               </div>
 
-              <h1 className="text-6xl sm:text-7xl lg:text-[5.5rem] xl:text-[6.5rem] font-bold tracking-tighter leading-[0.9] uppercase">
+              <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] xl:text-[6.5rem] font-bold tracking-tighter leading-[0.95] uppercase">
                 <span className="text-text-main">土木人的</span>
                 <br />
-                <span className="text-primary inline-block mt-2">OpenClaw</span>
+                <span className="text-primary inline-block mt-1 sm:mt-2">OpenClaw</span>
                 <br />
-                <span className="text-text-main inline-block mt-2">养虾基地</span>
+                <span className="text-text-main inline-block mt-1 sm:mt-2">养虾基地</span>
               </h1>
 
-              <p className="max-w-xl text-text-muted text-base lg:text-lg leading-relaxed">
+              <p className="max-w-xl text-text-muted text-base sm:text-lg leading-relaxed">
                 全网都在“养龙虾”，土木人也不能落下。OpenClaw 是 GitHub 286K+ Stars 的开源 AI Agent，能替你查规范、算量、写日志、追论文。这里有你需要的一切：安装教程、虾饲料推荐、国产模型配置和云端部署指南。
               </p>
 
-              <div className="flex flex-wrap gap-4">
-                <Link href="/blog/install-guide" className="px-8 py-4 rounded-full bg-primary text-background-dark font-mono font-bold text-sm uppercase tracking-wider hover:bg-primary/90 transition-colors flex items-center gap-2">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto">
+                <Link href="/blog/install-guide" className="px-6 sm:px-8 py-3.5 sm:py-4 rounded-full bg-primary text-background-dark font-mono font-bold text-sm uppercase tracking-wider hover:bg-primary/90 transition-colors flex items-center justify-center gap-2">
                   <span className="material-symbols-outlined text-lg">rocket_launch</span>
                   开始安装
                 </Link>
-                <Link href="/blog" className="px-8 py-4 rounded-full border-2 border-border-color text-text-main font-mono font-bold text-sm uppercase tracking-wider hover:border-primary hover:text-primary transition-colors flex items-center gap-2">
+                <Link href="/blog" className="px-6 sm:px-8 py-3.5 sm:py-4 rounded-full border-2 border-border-color text-text-main font-mono font-bold text-sm uppercase tracking-wider hover:border-primary hover:text-primary transition-colors flex items-center justify-center gap-2">
                   <span className="material-symbols-outlined text-lg">article</span>
                   养虾手册
                 </Link>
               </div>
 
               {/* Stats row */}
-              <div className="flex flex-wrap gap-6 pt-4 mt-4 border-t border-border-color/50">
+              <div className="flex flex-wrap gap-4 sm:gap-6 pt-4 mt-4 border-t border-border-color/50">
                 {stats.map((s) => (
-                  <div key={s.label} className="flex items-center gap-3">
-                    <span className="material-symbols-outlined text-primary text-lg">{s.icon}</span>
-                    <span className="text-text-main font-bold text-lg tracking-tight">{s.value}</span>
-                    <span className="text-text-muted font-mono text-[10px] uppercase tracking-widest">{s.label}</span>
+                  <div key={s.label} className="flex items-center gap-2 sm:gap-3">
+                    <span className="material-symbols-outlined text-primary text-base sm:text-lg">{s.icon}</span>
+                    <span className="text-text-main font-bold text-base sm:text-lg tracking-tight">{s.value}</span>
+                    <span className="text-text-muted font-mono text-[9px] sm:text-[10px] uppercase tracking-widest">{s.label}</span>
                   </div>
                 ))}
               </div>
@@ -446,18 +446,18 @@ export default function LandingPage() {
           <div className="w-[500px] h-[500px] bg-primary/5 rounded-full blur-[150px]" />
         </div>
         <div className="relative max-w-3xl mx-auto flex flex-col items-center text-center gap-8">
-          <h2 className="text-4xl lg:text-6xl font-bold text-text-main uppercase tracking-tight leading-tight">
+          <h2 className="text-3xl sm:text-4xl lg:text-6xl font-bold text-text-main uppercase tracking-tight leading-tight">
             准备好让 AI<br /><span className="text-primary">帮你干活</span>了吗
           </h2>
           <p className="text-text-muted max-w-lg">
             安装 OpenClaw，配置你的国产大模型，通过微信/Telegram 给 Agent 发第一条消息。10 分钟即可上手。
           </p>
-          <div className="flex flex-wrap gap-4 justify-center">
-            <Link href="/blog/install-guide" className="px-8 py-4 rounded-full bg-primary text-background-dark font-mono font-bold text-sm uppercase tracking-wider hover:bg-primary/90 transition-colors flex items-center gap-2">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center w-full sm:w-auto px-4 sm:px-0">
+            <Link href="/blog/install-guide" className="px-6 sm:px-8 py-3.5 sm:py-4 rounded-full bg-primary text-background-dark font-mono font-bold text-sm uppercase tracking-wider hover:bg-primary/90 transition-colors flex items-center justify-center gap-2">
               <span className="material-symbols-outlined text-lg">terminal</span>
               查看安装教程
             </Link>
-            <Link href="/library" className="px-8 py-4 rounded-full border-2 border-border-color text-text-main font-mono font-bold text-sm uppercase tracking-wider hover:border-primary hover:text-primary transition-colors">
+            <Link href="/library" className="px-6 sm:px-8 py-3.5 sm:py-4 rounded-full border-2 border-border-color text-text-main font-mono font-bold text-sm uppercase tracking-wider hover:border-primary hover:text-primary transition-colors flex items-center justify-center">
               浏览装备库
             </Link>
           </div>

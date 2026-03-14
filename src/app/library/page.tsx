@@ -136,21 +136,21 @@ export default function LibraryPage() {
 
         {/* Search Section */}
         <section className="flex flex-col gap-6 w-full max-w-5xl mx-auto">
-          <div className="relative w-full h-16 md:h-20">
-            <div className="absolute inset-y-0 left-0 pl-6 flex items-center pointer-events-none">
-              <span className="material-symbols-outlined text-text-muted text-3xl">search</span>
+          <div className="relative w-full h-14 sm:h-16 md:h-20">
+            <div className="absolute inset-y-0 left-0 pl-4 sm:pl-6 flex items-center pointer-events-none">
+              <span className="material-symbols-outlined text-text-muted text-2xl sm:text-3xl">search</span>
             </div>
             <input
-              className="block w-full h-full pl-16 pr-6 py-4 bg-surface border-2 border-border-color rounded-full text-text-main text-xl md:text-2xl font-bold placeholder:text-border-color focus:ring-0 focus:border-primary focus:outline-none transition-colors shadow-lg"
+              className="block w-full h-full pl-12 sm:pl-16 pr-6 py-3 sm:py-4 bg-surface border-2 border-border-color rounded-full text-text-main text-lg sm:text-xl md:text-2xl font-bold placeholder:text-border-color focus:ring-0 focus:border-primary focus:outline-none transition-colors shadow-lg"
               placeholder="搜索资源..."
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
             {searchQuery && (
-              <div className="absolute right-20 top-1/2 -translate-y-1/2">
-                <span className="text-text-muted text-sm font-mono">
-                  找到 {filteredResources.length} 个结果
+              <div className="absolute right-4 sm:right-20 top-1/2 -translate-y-1/2">
+                <span className="text-text-muted text-xs sm:text-sm font-mono">
+                  {filteredResources.length} 个
                 </span>
               </div>
             )}

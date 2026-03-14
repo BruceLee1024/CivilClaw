@@ -13,7 +13,7 @@ export default function Breadcrumb({ items }: BreadcrumbProps) {
   return (
     <nav className="flex items-center gap-2 text-sm font-mono">
       {items.map((item, index) => (
-        <div key={index} className="flex items-center gap-2">
+        <div key={index} className="flex items-center gap-1.5 sm:gap-2 whitespace-nowrap">
           {item.href ? (
             <Link
               href={item.href}

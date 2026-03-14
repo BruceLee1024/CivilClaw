@@ -70,8 +70,8 @@ export function Terminal({
           {copied ? "已复制" : "复制"}
         </button>
       </div>
-      <div className="p-4 overflow-x-auto">
-        <pre className="font-mono text-sm leading-relaxed">
+      <div className="p-3 sm:p-4 overflow-x-auto">
+        <pre className="font-mono text-xs sm:text-sm leading-relaxed">
           {highlightSyntax(children)}
         </pre>
       </div>

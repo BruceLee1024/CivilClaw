@@ -31,12 +31,12 @@ export default function ShareButtons({ title, url }: ShareButtonsProps) {
   };
 
   return (
-    <div className="flex items-center gap-3 flex-wrap">
+    <div className="flex flex-wrap items-center gap-2 sm:gap-3">
       <span className="text-text-muted text-sm font-mono">分享：</span>
       
       <button
         onClick={shareToWeChat}
-        className="flex items-center gap-2 px-3 py-2 rounded-lg bg-surface border border-border-color hover:border-[#07C160] hover:text-[#07C160] transition-colors text-sm font-mono"
+        className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 rounded-lg bg-accent-geo/10 border border-accent-geo/30 text-accent-geo hover:bg-accent-geo/20 transition-colors text-xs sm:text-sm font-mono"
         title="复制链接（微信分享）"
       >
         <span className="material-symbols-outlined text-lg">chat</span>
@@ -45,7 +45,7 @@ export default function ShareButtons({ title, url }: ShareButtonsProps) {
 
       <button
         onClick={shareToWeibo}
-        className="flex items-center gap-2 px-3 py-2 rounded-lg bg-surface border border-border-color hover:border-[#E6162D] hover:text-[#E6162D] transition-colors text-sm font-mono"
+        className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 rounded-lg bg-accent-struct/10 border border-accent-struct/30 text-accent-struct hover:bg-accent-struct/20 transition-colors text-xs sm:text-sm font-mono"
         title="分享到微博"
       >
         <span className="material-symbols-outlined text-lg">share</span>
@@ -54,7 +54,7 @@ export default function ShareButtons({ title, url }: ShareButtonsProps) {
 
       <button
         onClick={shareToTwitter}
-        className="flex items-center gap-2 px-3 py-2 rounded-lg bg-surface border border-border-color hover:border-[#1DA1F2] hover:text-[#1DA1F2] transition-colors text-sm font-mono"
+        className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 rounded-lg bg-accent-survey/10 border border-accent-survey/30 text-accent-survey hover:bg-accent-survey/20 transition-colors text-xs sm:text-sm font-mono"
         title="分享到 Twitter"
       >
         <span className="material-symbols-outlined text-lg">share</span>
@@ -63,7 +63,7 @@ export default function ShareButtons({ title, url }: ShareButtonsProps) {
 
       <button
         onClick={handleCopyLink}
-        className={`flex items-center gap-2 px-3 py-2 rounded-lg bg-surface border transition-colors text-sm font-mono ${
+        className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 rounded-lg bg-surface-hover border transition-colors text-xs sm:text-sm font-mono ${
           copied
             ? "border-primary text-primary"
             : "border-border-color hover:border-primary hover:text-primary"

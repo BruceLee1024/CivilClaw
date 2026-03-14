@@ -42,33 +42,35 @@ export default function TableOfContents() {
   if (headings.length === 0) return null;
 
   return (
-    <div className="sticky top-24 bg-surface rounded-xl border border-border-color p-5 max-h-[calc(100vh-120px)] overflow-y-auto">
-      <div className="flex items-center gap-2 mb-4">
-        <span className="material-symbols-outlined text-primary text-lg">list</span>
-        <h3 className="font-bold text-text-main text-sm uppercase tracking-wider">目录</h3>
+    <aside className="hidden lg:block lg:col-span-4 sticky top-24 self-start">
+      <div className="bg-surface border border-border-color rounded-2xl p-6 max-h-[calc(100vh-120px)] overflow-y-auto">
+        <div className="flex items-center gap-2 mb-4">
+          <span className="material-symbols-outlined text-primary text-lg">list</span>
+          <h3 className="font-bold text-text-main text-sm uppercase tracking-wider">目录</h3>
+        </div>
+        <nav className="flex flex-col gap-2">
+          {headings.map((heading) => (
+            <a
+              key={heading.id}
+              href={`#${heading.id}`}
+              onClick={(e) => {
+                e.preventDefault();
+                document.getElementById(heading.id)?.scrollIntoView({
+                  behavior: "smooth",
+                  block: "start",
+                });
+              }}
+              className={`text-sm py-1.5 px-3 rounded-lg transition-colors border-l-2 ${
+                activeId === heading.id
+                  ? "border-primary text-primary bg-primary/5 font-medium"
+                  : "border-transparent text-text-muted hover:text-text-main hover:bg-surface-hover"
+              }`}
+            >
+              {heading.text}
+            </a>
+          ))}
+        </nav>
       </div>
-      <nav className="flex flex-col gap-2">
-        {headings.map((heading) => (
-          <a
-            key={heading.id}
-            href={`#${heading.id}`}
-            onClick={(e) => {
-              e.preventDefault();
-              document.getElementById(heading.id)?.scrollIntoView({
-                behavior: "smooth",
-                block: "start",
-              });
-            }}
-            className={`text-sm py-1.5 px-3 rounded-lg transition-colors border-l-2 ${
-              activeId === heading.id
-                ? "border-primary text-primary bg-primary/5 font-medium"
-                : "border-transparent text-text-muted hover:text-text-main hover:bg-surface-hover"
-            }`}
-          >
-            {heading.text}
-          </a>
-        ))}
-      </nav>
-    </div>
+    </aside>
   );
 }
