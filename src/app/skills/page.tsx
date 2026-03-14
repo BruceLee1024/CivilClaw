@@ -253,7 +253,7 @@ export default function SkillsPage() {
   return (
     <>
       <Header />
-      <main className="flex-1 w-full px-6 py-8 lg:px-10 lg:py-12 flex flex-col gap-12">
+      <main className="flex-1 w-full px-4 sm:px-6 lg:px-10 py-8 lg:py-12 flex flex-col gap-12">
         {/* Hero */}
         <section className="w-full max-w-5xl mx-auto flex flex-col gap-6">
           <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-text-main uppercase tracking-tight border-l-4 border-primary pl-3 sm:pl-4">

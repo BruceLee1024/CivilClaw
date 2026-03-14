@@ -79,7 +79,7 @@ export default function BlogPage() {
   return (
     <>
       <Header />
-      <main className="w-full flex flex-col pt-8 pb-32 px-6">
+      <main className="w-full flex flex-col pt-8 pb-32 px-4 sm:px-6">
         <div className="max-w-5xl mx-auto w-full mb-8">
           <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-text-main uppercase tracking-tight border-l-4 border-primary pl-3 sm:pl-4">
             养虾手册

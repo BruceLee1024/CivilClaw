@@ -126,10 +126,10 @@ export default function LibraryPage() {
   return (
     <>
       <Header />
-      <main className="flex-1 w-full px-6 py-8 lg:px-10 lg:py-12 flex flex-col gap-10">
+      <main className="flex-1 w-full px-4 sm:px-6 lg:px-10 py-8 lg:py-12 flex flex-col gap-10">
         {/* Title */}
         <div className="w-full max-w-5xl mx-auto">
-          <h1 className="text-4xl font-bold text-text-main uppercase tracking-tight border-l-4 border-primary pl-4">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-text-main uppercase tracking-tight border-l-4 border-primary pl-3 sm:pl-4">
             养虾装备库
           </h1>
         </div>
@@ -184,7 +184,7 @@ export default function LibraryPage() {
               </button>
             </div>
           ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {filteredResources.map((r, i) => {
             const Wrapper = r.url ? "a" : "div";
             const wrapperProps = r.url ? { href: r.url, target: "_blank", rel: "noopener noreferrer" } : {};
