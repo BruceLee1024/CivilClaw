@@ -100,7 +100,7 @@ export default function LandingPage() {
     <div className="min-h-screen flex flex-col">
       {/* ─── Sticky Nav ─── */}
       <nav className="sticky top-0 z-50 w-full border-b border-border-color bg-background-dark/90 backdrop-blur-md">
-        <div className="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3">
             <div className="w-7 h-7 bg-primary rounded-md flex items-center justify-center text-background-dark">
               <span className="material-symbols-outlined text-lg font-bold">hub</span>
@@ -122,7 +122,7 @@ export default function LandingPage() {
       </nav>
 
       {/* ─── Hero ─── */}
-      <section className="relative w-full min-h-[100svh] flex flex-col justify-center overflow-hidden">
+      <section className="relative w-full min-h-[auto] lg:min-h-[100svh] flex flex-col justify-center overflow-hidden">
         {/* Decorative layers */}
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-[20%] left-[5%] w-[min(700px,80vw)] h-[min(700px,80vw)] bg-primary/[0.04] rounded-full blur-[160px]" />
@@ -132,16 +132,16 @@ export default function LandingPage() {
           <div className="absolute top-1/2 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
         </div>
 
-        <div className="relative max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-16 py-24 lg:py-0">
-          <div className="grid lg:grid-cols-2 gap-16 lg:gap-20 items-center">
+        <div className="relative max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-16 py-12 sm:py-16 lg:py-0">
+          <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-20 items-center">
             {/* Left: Text */}
-            <div className="flex flex-col gap-8">
-              <div className="flex items-center gap-3 px-4 py-2 rounded-full border border-border-color bg-surface/80 backdrop-blur text-xs font-mono text-text-muted w-fit">
-                <span className="w-2 h-2 rounded-full bg-accent-geo animate-pulse" />
-                Peter Steinberger 创建 · 开源基金会维护 · MIT License
+            <div className="flex flex-col gap-5 sm:gap-8">
+              <div className="flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-border-color bg-surface/80 backdrop-blur text-[10px] sm:text-xs font-mono text-text-muted w-fit">
+                <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-accent-geo animate-pulse shrink-0" />
+                <span className="truncate">开源基金会维护 · MIT License</span>
               </div>
 
-              <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] xl:text-[6.5rem] font-bold tracking-tighter leading-[0.95] uppercase">
+              <h1 className="text-[2.5rem] sm:text-6xl md:text-7xl lg:text-[5.5rem] xl:text-[6.5rem] font-bold tracking-tighter leading-[0.95] uppercase">
                 <span className="text-text-main">土木人的</span>
                 <br />
                 <span className="text-primary inline-block mt-1 sm:mt-2">OpenClaw</span>
@@ -149,7 +149,7 @@ export default function LandingPage() {
                 <span className="text-text-main inline-block mt-1 sm:mt-2">养虾基地</span>
               </h1>
 
-              <p className="max-w-xl text-text-muted text-base sm:text-lg leading-relaxed">
+              <p className="max-w-xl text-text-muted text-sm sm:text-base lg:text-lg leading-relaxed">
                 全网都在“养龙虾”，土木人也不能落下。OpenClaw 是 GitHub 286K+ Stars 的开源 AI Agent，能替你查规范、算量、写日志、追论文。这里有你需要的一切：安装教程、虾饲料推荐、国产模型配置和云端部署指南。
               </p>
 
@@ -165,7 +165,7 @@ export default function LandingPage() {
               </div>
 
               {/* Stats row */}
-              <div className="flex flex-wrap gap-4 sm:gap-6 pt-4 mt-4 border-t border-border-color/50">
+              <div className="flex flex-wrap gap-3 sm:gap-6 pt-3 sm:pt-4 mt-3 sm:mt-4 border-t border-border-color/50">
                 {stats.map((s) => (
                   <div key={s.label} className="flex items-center gap-2 sm:gap-3">
                     <span className="material-symbols-outlined text-primary text-base sm:text-lg">{s.icon}</span>
@@ -177,7 +177,7 @@ export default function LandingPage() {
             </div>
 
             {/* Right: Terminal */}
-            <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-4 sm:gap-6">
               <div className="rounded-2xl overflow-hidden border border-border-color bg-surface-darker shadow-2xl shadow-primary/5">
                 <div className="flex items-center gap-2 px-5 py-3.5 border-b border-border-color bg-[#151515]">
                   <div className="w-3 h-3 rounded-full bg-accent-struct/80" />
@@ -202,16 +202,16 @@ export default function LandingPage() {
               </div>
 
               {/* Quick links under terminal */}
-              <div className="grid grid-cols-3 gap-3">
-                <Link href="/skills" className="bg-surface border border-border-color rounded-xl p-4 flex flex-col items-center gap-2 hover:border-primary/50 transition-colors group">
+              <div className="grid grid-cols-3 gap-2 sm:gap-3">
+                <Link href="/skills" className="bg-surface border border-border-color rounded-xl p-3 sm:p-4 flex flex-col items-center gap-1.5 sm:gap-2 hover:border-primary/50 transition-colors group">
                   <span className="material-symbols-outlined text-accent-geo text-xl group-hover:text-primary transition-colors">extension</span>
                   <span className="text-text-muted text-[10px] font-mono uppercase tracking-widest group-hover:text-text-main transition-colors">虾饲料</span>
                 </Link>
-                <Link href="/library" className="bg-surface border border-border-color rounded-xl p-4 flex flex-col items-center gap-2 hover:border-primary/50 transition-colors group">
+                <Link href="/library" className="bg-surface border border-border-color rounded-xl p-3 sm:p-4 flex flex-col items-center gap-1.5 sm:gap-2 hover:border-primary/50 transition-colors group">
                   <span className="material-symbols-outlined text-accent-survey text-xl group-hover:text-primary transition-colors">folder_open</span>
                   <span className="text-text-muted text-[10px] font-mono uppercase tracking-widest group-hover:text-text-main transition-colors">装备库</span>
                 </Link>
-                <a href="https://github.com/openclaw/openclaw" target="_blank" rel="noopener noreferrer" className="bg-surface border border-border-color rounded-xl p-4 flex flex-col items-center gap-2 hover:border-primary/50 transition-colors group">
+                <a href="https://github.com/openclaw/openclaw" target="_blank" rel="noopener noreferrer" className="bg-surface border border-border-color rounded-xl p-3 sm:p-4 flex flex-col items-center gap-1.5 sm:gap-2 hover:border-primary/50 transition-colors group">
                   <span className="material-symbols-outlined text-accent-const text-xl group-hover:text-primary transition-colors">code</span>
                   <span className="text-text-muted text-[10px] font-mono uppercase tracking-widest group-hover:text-text-main transition-colors">GitHub</span>
                 </a>
@@ -221,24 +221,24 @@ export default function LandingPage() {
         </div>
 
         {/* Bottom scroll hint */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-text-muted/40">
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 hidden lg:flex flex-col items-center gap-2 text-text-muted/40">
           <span className="font-mono text-[10px] uppercase tracking-[0.3em]">Scroll</span>
           <span className="material-symbols-outlined text-sm animate-bounce">expand_more</span>
         </div>
       </section>
 
       {/* ─── Features Bento Grid ─── */}
-      <section className="w-full px-6 py-20">
+      <section className="w-full px-4 sm:px-6 py-12 sm:py-20">
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col items-center text-center mb-14 gap-3">
+          <div className="flex flex-col items-center text-center mb-8 sm:mb-14 gap-3">
             <span className="px-4 py-1.5 rounded-full border border-border-color bg-surface text-text-muted font-mono text-xs uppercase tracking-widest">核心特性</span>
-            <h2 className="text-4xl lg:text-5xl font-bold text-text-main uppercase tracking-tight">为什么选 OpenClaw</h2>
+            <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold text-text-main uppercase tracking-tight">为什么选 OpenClaw</h2>
             <p className="text-text-muted max-w-xl text-sm">由 Peter Steinberger 创建的开源个人 AI 助手——不只是聊天机器人，而是一个能替你行动的自主 Agent。</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {features.map((f) => (
-              <div key={f.title} className={`bg-surface rounded-[2rem] border border-border-color bento-card p-8 flex flex-col gap-4`}>
+              <div key={f.title} className={`bg-surface rounded-2xl sm:rounded-[2rem] border border-border-color bento-card p-5 sm:p-8 flex flex-col gap-3 sm:gap-4`}>
                 <div className={`w-12 h-12 rounded-2xl border ${f.bg} flex items-center justify-center`}>
                   <span className={`material-symbols-outlined text-xl ${f.color}`}>{f.icon}</span>
                 </div>
@@ -251,11 +251,11 @@ export default function LandingPage() {
       </section>
 
       {/* ─── 虾饲料入口 ─── */}
-      <section className="w-full px-6 py-20 bg-surface border-y border-border-color">
+      <section className="w-full px-4 sm:px-6 py-12 sm:py-20 bg-surface border-y border-border-color">
         <div className="max-w-7xl mx-auto flex flex-col items-center text-center gap-10">
           <div className="flex flex-col items-center gap-3">
             <span className="px-4 py-1.5 rounded-full border border-accent-geo/30 bg-accent-geo/5 text-accent-geo font-mono text-xs uppercase tracking-widest">给你的虾加餐</span>
-            <h2 className="text-4xl lg:text-5xl font-bold text-text-main uppercase tracking-tight">虾饲料仓库</h2>
+            <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold text-text-main uppercase tracking-tight">虾饲料仓库</h2>
             <p className="text-text-muted max-w-xl text-sm">ClawHub 托管 13,729 个社区 Skill。我们按土木工程场景筛选了最实用的 Skill——规范查询、造价算量、施工日志、团队协作、论文追踪，一行命令即可安装。</p>
           </div>
 
@@ -288,11 +288,11 @@ export default function LandingPage() {
       </section>
 
       {/* ─── Quick Start ─── */}
-      <section className="w-full px-6 py-20 bg-surface border-y border-border-color">
+      <section className="w-full px-4 sm:px-6 py-12 sm:py-20 bg-surface border-y border-border-color">
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
           <div className="flex flex-col gap-6">
             <span className="px-4 py-1.5 rounded-full border border-primary/30 bg-primary/5 text-primary font-mono text-xs uppercase tracking-widest w-fit">三步快速开始</span>
-            <h2 className="text-4xl font-bold text-text-main uppercase tracking-tight">10 分钟上手</h2>
+            <h2 className="text-2xl sm:text-4xl font-bold text-text-main uppercase tracking-tight">10 分钟上手</h2>
             <div className="flex flex-col gap-4">
               {[
                 { n: "1", title: "安装 OpenClaw", code: "npm install -g openclaw@latest", note: "需要 Node.js ≥ 22" },
@@ -316,7 +316,7 @@ export default function LandingPage() {
           </div>
 
           {/* Glossary */}
-          <div className="bg-background-dark rounded-[2rem] border border-border-color p-8 flex flex-col gap-5">
+          <div className="bg-background-dark rounded-2xl sm:rounded-[2rem] border border-border-color p-5 sm:p-8 flex flex-col gap-5">
             <div className="flex items-center gap-3 mb-2">
               <span className="material-symbols-outlined text-primary">translate</span>
               <h3 className="font-bold text-text-main uppercase tracking-wider text-sm">OpenClaw 术语速查</h3>
@@ -334,14 +334,14 @@ export default function LandingPage() {
       </section>
 
       {/* ─── Architecture Diagram ─── */}
-      <section className="w-full px-6 py-20">
+      <section className="w-full px-4 sm:px-6 py-12 sm:py-20">
         <div className="max-w-5xl mx-auto flex flex-col items-center gap-10">
           <div className="text-center flex flex-col gap-3">
             <span className="px-4 py-1.5 rounded-full border border-border-color bg-surface text-text-muted font-mono text-xs uppercase tracking-widest mx-auto">架构概览</span>
-            <h2 className="text-4xl font-bold text-text-main uppercase tracking-tight">Gateway 驱动一切</h2>
+            <h2 className="text-2xl sm:text-4xl font-bold text-text-main uppercase tracking-tight">Gateway 驱动一切</h2>
           </div>
 
-          <div className="w-full rounded-[2rem] border border-border-color bg-surface p-8 lg:p-12">
+          <div className="w-full rounded-2xl sm:rounded-[2rem] border border-border-color bg-surface p-4 sm:p-8 lg:p-12">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {/* Input */}
               <div className="flex flex-col gap-3">
@@ -410,12 +410,12 @@ export default function LandingPage() {
       </section>
 
       {/* ─── Latest Articles ─── */}
-      <section className="w-full px-6 py-20 bg-surface border-y border-border-color">
+      <section className="w-full px-4 sm:px-6 py-12 sm:py-20 bg-surface border-y border-border-color">
         <div className="max-w-7xl mx-auto">
-          <div className="flex items-end justify-between mb-10">
+          <div className="flex items-end justify-between mb-6 sm:mb-10">
             <div>
               <span className="px-4 py-1.5 rounded-full border border-border-color bg-background-dark text-text-muted font-mono text-xs uppercase tracking-widest">最新内容</span>
-              <h2 className="text-4xl font-bold text-text-main uppercase tracking-tight mt-4">养虾手册</h2>
+              <h2 className="text-2xl sm:text-4xl font-bold text-text-main uppercase tracking-tight mt-3 sm:mt-4">养虾手册</h2>
             </div>
             <Link href="/blog" className="text-primary font-mono text-sm uppercase tracking-widest hover:underline flex items-center gap-1">
               查看全部 <span className="material-symbols-outlined text-sm">arrow_forward</span>
@@ -425,7 +425,7 @@ export default function LandingPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             {articles.map((a, i) => (
               <Link key={a.id} href={`/blog/${a.id}`} className="group">
-                <article className={`bg-background-dark rounded-[2rem] border overflow-hidden hover:border-primary/50 transition-colors h-full flex flex-col p-7 gap-4 ${i === 0 ? "border-primary/30 md:col-span-2" : "border-border-color"}`}>
+                <article className={`bg-background-dark rounded-2xl sm:rounded-[2rem] border overflow-hidden hover:border-primary/50 transition-colors h-full flex flex-col p-5 sm:p-7 gap-3 sm:gap-4 ${i === 0 ? "border-primary/30 md:col-span-2" : "border-border-color"}`}>
                   <div className="flex items-center gap-3">
                     <span className={`px-3 py-1 rounded-full border bg-black text-xs font-bold uppercase tracking-wider ${a.tagColor}`}>{a.tag}</span>
                     <span className="text-text-muted font-mono text-xs">{a.date}</span>
@@ -441,9 +441,9 @@ export default function LandingPage() {
       </section>
 
       {/* ─── CTA ─── */}
-      <section className="w-full px-6 py-28 relative overflow-hidden">
+      <section className="w-full px-4 sm:px-6 py-16 sm:py-28 relative overflow-hidden">
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <div className="w-[500px] h-[500px] bg-primary/5 rounded-full blur-[150px]" />
+          <div className="w-[min(500px,80vw)] h-[min(500px,80vw)] bg-primary/5 rounded-full blur-[150px]" />
         </div>
         <div className="relative max-w-3xl mx-auto flex flex-col items-center text-center gap-8">
           <h2 className="text-3xl sm:text-4xl lg:text-6xl font-bold text-text-main uppercase tracking-tight leading-tight">
@@ -465,11 +465,11 @@ export default function LandingPage() {
       </section>
 
       {/* ─── 关于我们 ─── */}
-      <section className="w-full px-6 py-20 bg-surface border-y border-border-color">
+      <section className="w-full px-4 sm:px-6 py-12 sm:py-20 bg-surface border-y border-border-color">
         <div className="max-w-7xl mx-auto grid lg:grid-cols-[1fr_auto] gap-12 lg:gap-20 items-center">
           <div className="flex flex-col gap-6">
             <span className="px-4 py-1.5 rounded-full border border-primary/30 bg-primary/5 text-primary font-mono text-xs uppercase tracking-widest w-fit">关于我们</span>
-            <h2 className="text-3xl lg:text-4xl font-bold text-text-main uppercase tracking-tight leading-tight">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-text-main uppercase tracking-tight leading-tight">
               让每一个土木人<br />都能乘上 <span className="text-primary">AI 的东风</span>
             </h2>
             <p className="text-text-muted text-sm leading-relaxed max-w-2xl">
@@ -488,7 +488,7 @@ export default function LandingPage() {
 
       {/* ─── Footer ─── */}
       <footer className="w-full border-t border-border-color bg-surface">
-        <div className="max-w-7xl mx-auto px-6 py-12 grid grid-cols-2 md:grid-cols-4 gap-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12 grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
           <div className="col-span-2 md:col-span-1">
             <div className="flex items-center gap-2 mb-4">
               <div className="w-6 h-6 bg-primary rounded-sm flex items-center justify-center text-background-dark">
@@ -527,7 +527,7 @@ export default function LandingPage() {
             </div>
           </div>
         </div>
-        <div className="max-w-7xl mx-auto px-6 py-6 border-t border-border-color flex flex-wrap items-center justify-between gap-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-6 border-t border-border-color flex flex-wrap items-center justify-between gap-3 sm:gap-4">
           <p className="text-text-muted font-mono text-xs">
             CivilClaw 土木社区 · 非官方内容集合站 · 数据来源于公开信息
           </p>
