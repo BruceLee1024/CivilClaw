@@ -52,9 +52,34 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "CivilClaw",
+    description: "土木工程师的 AI Agent 工具箱",
+    url: "https://civilclaw.com",
+    publisher: {
+      "@type": "Organization",
+      name: "CivilClaw Team",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://civilclaw.com/logo.png",
+      },
+    },
+    potentialAction: {
+      "@type": "SearchAction",
+      target: "https://civilclaw.com/search?q={search_term_string}",
+      "query-input": "required name=search_term_string",
+    },
+  };
+
   return (
     <html lang="zh" className="dark" suppressHydrationWarning>
       <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         <link
           href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap"
           rel="stylesheet"

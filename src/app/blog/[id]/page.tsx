@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 import { articlesMeta, articleContent } from "@/data/articles/index";
 import ShareButtons from "@/components/ShareButtons";
 import ReadingProgress from "@/components/ReadingProgress";
@@ -10,6 +11,52 @@ import { countWords } from "@/utils/wordCount";
 
 export function generateStaticParams() {
   return articlesMeta.map((a) => ({ id: a.id }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const article = articlesMeta.find((a) => a.id === id);
+
+  if (!article) {
+    return {
+      title: "文章未找到",
+    };
+  }
+
+  return {
+    title: article.title,
+    description: article.excerpt,
+    keywords: [
+      "OpenClaw",
+      "土木工程",
+      article.tag,
+      article.author,
+      "AI Agent",
+      "教程",
+    ],
+    authors: [{ name: article.author }],
+    openGraph: {
+      title: article.title,
+      description: article.excerpt,
+      type: "article",
+      publishedTime: article.date,
+      authors: [article.author],
+      tags: [article.tag],
+      url: `https://civilclaw.com/blog/${id}`,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: article.title,
+      description: article.excerpt,
+    },
+    alternates: {
+      canonical: `/blog/${id}`,
+    },
+  };
 }
 
 const relatedFor = (currentId: string) => {
@@ -50,8 +97,41 @@ export default async function BlogArticlePage({
   const related = relatedFor(id);
   const wordCount = countWords(content);
 
+  // 结构化数据 (JSON-LD)
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: article.title,
+    description: article.excerpt,
+    author: {
+      "@type": "Person",
+      name: article.author,
+    },
+    datePublished: article.date,
+    dateModified: article.date,
+    publisher: {
+      "@type": "Organization",
+      name: "CivilClaw",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://civilclaw.com/logo.png",
+      },
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `https://civilclaw.com/blog/${id}`,
+    },
+    keywords: [article.tag, "OpenClaw", "土木工程", "AI Agent"],
+    articleSection: article.tag,
+    wordCount: wordCount,
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <ReadingProgress />
       {/* Top Navigation */}
       <header className="sticky top-0 z-50 flex items-center justify-between whitespace-nowrap border-b border-border-color bg-background-dark/90 backdrop-blur px-6 lg:px-10 py-3 w-full">
