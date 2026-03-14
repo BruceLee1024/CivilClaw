@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import ClientProviders from "@/components/ClientProviders";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -64,7 +65,7 @@ export default function RootLayout({
         />
       </head>
       <body className="font-display antialiased min-h-screen overflow-x-hidden" suppressHydrationWarning>
-        {children}
+        <ClientProviders>{children}</ClientProviders>
       </body>
     </html>
   );

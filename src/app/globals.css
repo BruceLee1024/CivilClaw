@@ -87,6 +87,17 @@ body {
   100% { transform: translateX(-100%); }
 }
 
+/* Prevent horizontal overflow on mobile */
+article pre,
+article code,
+article table {
+  max-width: 100%;
+}
+article pre {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: var(--color-background-dark); }
 ::-webkit-scrollbar-thumb { background: var(--color-border-color); border-radius: 9999px; }

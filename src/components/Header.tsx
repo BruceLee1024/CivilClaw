@@ -3,12 +3,16 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import { SearchTrigger } from "@/components/GlobalSearch";
 
 const navItems = [
   { href: "/", label: "虾塘" },
   { href: "/blog", label: "养虾手册" },
   { href: "/skills", label: "虾饲料" },
   { href: "/library", label: "装备库" },
+  { href: "/config-generator", label: "配置器" },
+  { href: "/commands", label: "命令表" },
+  { href: "/faq", label: "FAQ" },
 ];
 
 export default function Header() {
@@ -51,7 +55,8 @@ export default function Header() {
             })}
           </nav>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
+          <SearchTrigger />
           <div className="hidden lg:flex font-mono text-xs text-primary items-center gap-2">
             <span className="inline-block w-2 h-2 rounded-full bg-primary animate-pulse" />
             GitHub Stars：286K+

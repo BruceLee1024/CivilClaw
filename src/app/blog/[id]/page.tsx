@@ -78,7 +78,7 @@ export default async function BlogArticlePage({
       <main className="w-full px-4 sm:px-6 lg:px-20 py-8 sm:py-12 relative z-10">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
           {/* Article */}
-          <article className="flex flex-col gap-6 lg:col-span-8">
+          <article className="flex flex-col gap-6 lg:col-span-8 min-w-0 overflow-hidden">
           {/* Breadcrumb */}
           <Breadcrumb
             items={[
@@ -138,7 +138,7 @@ export default async function BlogArticlePage({
           </div>
 
           {/* Article Content */}
-          <div className="mt-4 space-y-6">{content}</div>
+          <div className="mt-4 space-y-6 overflow-x-hidden">{content}</div>
 
           {/* Share Buttons */}
           <div className="mt-8 pt-6 border-t border-border-color">
@@ -172,6 +172,41 @@ export default async function BlogArticlePage({
             </p>
           </div>
         </div>
+
+        {/* Article Navigation: Prev / Next */}
+        {(() => {
+          const currentIndex = articlesMeta.findIndex((a) => a.id === id);
+          const prevArticle = currentIndex > 0 ? articlesMeta[currentIndex - 1] : null;
+          const nextArticle = currentIndex < articlesMeta.length - 1 ? articlesMeta[currentIndex + 1] : null;
+          return (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {prevArticle ? (
+                <Link
+                  href={`/blog/${prevArticle.id}`}
+                  className="group flex items-start gap-3 p-4 sm:p-5 rounded-2xl border border-border-color bg-surface hover:border-primary/50 transition-colors"
+                >
+                  <span className="material-symbols-outlined text-text-muted group-hover:text-primary transition-colors mt-0.5">arrow_back</span>
+                  <div className="flex flex-col gap-1 min-w-0">
+                    <span className="text-text-muted text-[10px] font-mono uppercase tracking-widest">上一篇</span>
+                    <span className="text-text-main text-sm font-bold group-hover:text-primary transition-colors line-clamp-2">{prevArticle.title}</span>
+                  </div>
+                </Link>
+              ) : <div />}
+              {nextArticle ? (
+                <Link
+                  href={`/blog/${nextArticle.id}`}
+                  className="group flex items-start gap-3 p-4 sm:p-5 rounded-2xl border border-border-color bg-surface hover:border-primary/50 transition-colors text-right sm:justify-end"
+                >
+                  <div className="flex flex-col gap-1 min-w-0">
+                    <span className="text-text-muted text-[10px] font-mono uppercase tracking-widest">下一篇</span>
+                    <span className="text-text-main text-sm font-bold group-hover:text-primary transition-colors line-clamp-2">{nextArticle.title}</span>
+                  </div>
+                  <span className="material-symbols-outlined text-text-muted group-hover:text-primary transition-colors mt-0.5">arrow_forward</span>
+                </Link>
+              ) : <div />}
+            </div>
+          );
+        })()}
 
         {/* Related Articles */}
         <div className="w-full">
