@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { articlesMeta, articleContent } from "@/data/articles";
+import { articlesMeta, articleContent } from "@/data/articles/index";
 
 export function generateStaticParams() {
   return articlesMeta.map((a) => ({ id: a.id }));
