@@ -1,6 +1,8 @@
 import { MetadataRoute } from "next";
 import { articlesMeta } from "@/data/articles/index";
 
+export const dynamic = "force-static";
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://civilclaw.com";
 
