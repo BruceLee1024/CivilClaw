@@ -1,7 +1,9 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import Header from "@/components/Header";
+import BackToTop from "@/components/BackToTop";
 
 const categories = [
   { label: "全部资源", color: "text-muted", dotColor: "bg-text-muted", borderClass: "border-border-color" },
@@ -111,6 +113,16 @@ const resources = [
 ];
 
 export default function LibraryPage() {
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filteredResources = resources.filter((r) => {
+    const query = searchQuery.toLowerCase();
+    return (
+      r.title.toLowerCase().includes(query) ||
+      r.subtitle.toLowerCase().includes(query)
+    );
+  });
+
   return (
     <>
       <Header />
@@ -132,20 +144,16 @@ export default function LibraryPage() {
               className="block w-full h-full pl-16 pr-6 py-4 bg-surface border-2 border-border-color rounded-full text-text-main text-xl md:text-2xl font-bold placeholder:text-border-color focus:ring-0 focus:border-primary focus:outline-none transition-colors shadow-lg"
               placeholder="搜索资源..."
               type="text"
-              onChange={(e) => {
-                const query = e.target.value.toLowerCase();
-                const cards = document.querySelectorAll('[data-resource-card]');
-                cards.forEach((card) => {
-                  const title = card.getAttribute('data-title')?.toLowerCase() || '';
-                  const subtitle = card.getAttribute('data-subtitle')?.toLowerCase() || '';
-                  if (title.includes(query) || subtitle.includes(query)) {
-                    (card as HTMLElement).style.display = '';
-                  } else {
-                    (card as HTMLElement).style.display = 'none';
-                  }
-                });
-              }}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
             />
+            {searchQuery && (
+              <div className="absolute right-20 top-1/2 -translate-y-1/2">
+                <span className="text-text-muted text-sm font-mono">
+                  找到 {filteredResources.length} 个结果
+                </span>
+              </div>
+            )}
           </div>
           <div className="flex flex-wrap items-center justify-center gap-3">
             {categories.map((cat) => (
@@ -161,8 +169,23 @@ export default function LibraryPage() {
         </section>
 
         {/* Resource Grid */}
-        <section className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 w-full max-w-6xl mx-auto">
-          {resources.map((r, i) => {
+        <section className="w-full max-w-6xl mx-auto">
+          {filteredResources.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-20 gap-4">
+              <span className="material-symbols-outlined text-6xl text-text-muted/30">search_off</span>
+              <p className="text-text-muted text-lg font-mono">
+                没有找到匹配 "{searchQuery}" 的资源
+              </p>
+              <button
+                onClick={() => setSearchQuery("")}
+                className="px-6 py-2 rounded-full border border-border-color text-text-muted hover:border-primary hover:text-primary transition-colors text-sm font-mono"
+              >
+                清空搜索
+              </button>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+              {filteredResources.map((r, i) => {
             const Wrapper = r.url ? "a" : "div";
             const wrapperProps = r.url ? { href: r.url, target: "_blank", rel: "noopener noreferrer" } : {};
             return (
@@ -196,6 +219,8 @@ export default function LibraryPage() {
               </Wrapper>
             );
           })}
+            </div>
+          )}
         </section>
 
         {/* Load More */}
@@ -206,6 +231,7 @@ export default function LibraryPage() {
           </button>
         </div>
       </main>
+      <BackToTop />
     </>
   );
 }

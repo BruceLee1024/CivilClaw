@@ -4,13 +4,37 @@ import { articlesMeta, articleContent } from "@/data/articles/index";
 import ShareButtons from "@/components/ShareButtons";
 import ReadingProgress from "@/components/ReadingProgress";
 import TableOfContents from "@/components/TableOfContents";
+import BackToTop from "@/components/BackToTop";
+import Breadcrumb from "@/components/Breadcrumb";
+import { countWords } from "@/utils/wordCount";
 
 export function generateStaticParams() {
   return articlesMeta.map((a) => ({ id: a.id }));
 }
 
-const relatedFor = (currentId: string) =>
-  articlesMeta.filter((a) => a.id !== currentId).slice(0, 3);
+const relatedFor = (currentId: string) => {
+  const currentArticle = articlesMeta.find((a) => a.id === currentId);
+  if (!currentArticle) return [];
+
+  // 基于标签相似度推荐
+  const scored = articlesMeta
+    .filter((a) => a.id !== currentId)
+    .map((article) => {
+      let score = 0;
+      // 相同标签得分最高
+      if (article.tag === currentArticle.tag) score += 10;
+      // 都是置顶文章加分
+      if (article.featured && currentArticle.featured) score += 5;
+      // 相同作者加分
+      if (article.author === currentArticle.author) score += 3;
+      return { article, score };
+    })
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 3)
+    .map((item) => item.article);
+
+  return scored;
+};
 
 export default async function BlogArticlePage({
   params,
@@ -24,6 +48,7 @@ export default async function BlogArticlePage({
   if (!article || !content) notFound();
 
   const related = relatedFor(id);
+  const wordCount = countWords(content);
 
   return (
     <>
@@ -54,6 +79,15 @@ export default async function BlogArticlePage({
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* Article */}
           <article className="flex flex-col gap-6 lg:col-span-8">
+          {/* Breadcrumb */}
+          <Breadcrumb
+            items={[
+              { label: "首页", href: "/" },
+              { label: "养虾手册", href: "/blog" },
+              { label: article.title },
+            ]}
+          />
+
           <div className="flex items-center gap-3 mb-2">
             <span
               className={`inline-flex items-center justify-center px-4 py-1 rounded-full border bg-black text-xs font-mono uppercase tracking-widest shadow-[0_0_10px_rgba(255,0,122,0.2)] ${article.tagClass}`}
@@ -71,19 +105,35 @@ export default async function BlogArticlePage({
             {article.title}
           </h1>
 
-          <div className="flex items-center gap-4 py-4 border-y border-border-color mt-2">
-            <div className="w-10 h-10 rounded-full bg-surface-darker border border-border-color flex items-center justify-center text-primary font-mono text-sm font-bold">
-              <span className="material-symbols-outlined text-lg">
-                engineering
+          <div className="flex items-center gap-4 text-xs font-mono text-text-muted flex-wrap">
+            <div className="flex items-center gap-1.5">
+              <span className="material-symbols-outlined text-sm">
+                person
               </span>
-            </div>
-            <div className="flex flex-col">
-              <span className="text-text-main font-mono font-bold text-sm uppercase">
+              <span className="text-text-main font-bold uppercase tracking-wider">
                 {article.author}
               </span>
-              <span className="text-text-muted font-mono text-xs tracking-widest">
-                {article.date} · 阅读 {article.readTime}
+            </div>
+            <span className="text-border-color">/</span>
+            <div className="flex items-center gap-1.5">
+              <span className="material-symbols-outlined text-sm">
+                calendar_today
               </span>
+              <span>{article.date}</span>
+            </div>
+            <span className="text-border-color">/</span>
+            <div className="flex items-center gap-1.5">
+              <span className="material-symbols-outlined text-sm">
+                schedule
+              </span>
+              <span>阅读 {article.readTime}</span>
+            </div>
+            <span className="text-border-color">/</span>
+            <div className="flex items-center gap-1.5">
+              <span className="material-symbols-outlined text-sm">
+                text_fields
+              </span>
+              <span>{wordCount.toLocaleString()} 字</span>
             </div>
           </div>
 
@@ -149,6 +199,7 @@ export default async function BlogArticlePage({
         </div>
       </div>
       </main>
+      <BackToTop />
     </>
   );
 }

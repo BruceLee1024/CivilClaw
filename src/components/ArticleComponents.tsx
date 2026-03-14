@@ -26,6 +26,33 @@ export function Terminal({
     setTimeout(() => setCopied(false), 2000);
   };
 
+  // 简单的语法高亮
+  const highlightSyntax = (code: string) => {
+    const lines = code.split('\n');
+    return lines.map((line, i) => {
+      // 命令提示符
+      if (line.startsWith('$') || line.startsWith('#')) {
+        const [prompt, ...rest] = line.split(' ');
+        return (
+          <div key={i}>
+            <span className="text-accent-geo">{prompt}</span>
+            {rest.length > 0 && <span className="text-[#A9B7C6]"> {rest.join(' ')}</span>}
+          </div>
+        );
+      }
+      // 注释
+      if (line.trim().startsWith('#')) {
+        return <div key={i} className="text-text-muted italic">{line}</div>;
+      }
+      // 输出行（通常以 > 或其他字符开头）
+      if (line.startsWith('>') || line.startsWith('✓') || line.startsWith('⨯')) {
+        return <div key={i} className="text-accent-survey">{line}</div>;
+      }
+      // 普通行
+      return <div key={i} className="text-[#A9B7C6]">{line}</div>;
+    });
+  };
+
   return (
     <div className="my-4 rounded-xl overflow-hidden border border-border-color bg-surface-darker shadow-2xl group">
       <div className="flex items-center justify-between px-4 py-2 border-b border-border-color bg-[#151515]">
@@ -44,8 +71,8 @@ export function Terminal({
         </button>
       </div>
       <div className="p-4 overflow-x-auto">
-        <pre className="font-mono text-sm leading-relaxed text-[#A9B7C6]">
-          {children}
+        <pre className="font-mono text-sm leading-relaxed">
+          {highlightSyntax(children)}
         </pre>
       </div>
     </div>

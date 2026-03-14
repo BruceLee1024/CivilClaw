@@ -1,7 +1,9 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import Header from "@/components/Header";
+import BackToTop from "@/components/BackToTop";
 
 const categories = [
   {
@@ -237,6 +239,17 @@ const skills = [
 ];
 
 export default function SkillsPage() {
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+
+  const filteredSkills = selectedCategory
+    ? skills.filter((skill) => skill.cat === selectedCategory)
+    : skills;
+
+  const groupedSkills = categories.map((cat) => ({
+    ...cat,
+    skills: filteredSkills.filter((s) => s.cat === cat.id),
+  })).filter((cat) => cat.skills.length > 0);
+
   return (
     <>
       <Header />
@@ -259,9 +272,47 @@ export default function SkillsPage() {
           </div>
         </section>
 
-        {/* Category Sections */}
-        {categories.map((cat) => {
-          const catSkills = skills.filter((s) => s.cat === cat.id);
+        {/* Category Filter */}
+        <section className="flex flex-wrap items-center justify-center gap-3 w-full max-w-5xl mx-auto">
+          <button
+            onClick={() => setSelectedCategory(null)}
+            className={`px-5 py-2.5 rounded-full border flex items-center gap-2 transition-all ${
+              selectedCategory === null
+                ? "border-primary bg-primary/20 text-primary"
+                : "border-border-color bg-surface hover:border-primary/50 text-text-muted"
+            }`}
+          >
+            <span className="material-symbols-outlined text-lg">apps</span>
+            <span className="font-mono text-xs font-bold uppercase tracking-wider">
+              全部 ({skills.length})
+            </span>
+          </button>
+          {categories.map((cat) => {
+            const count = skills.filter((s) => s.cat === cat.id).length;
+            return (
+              <button
+                key={cat.id}
+                onClick={() => setSelectedCategory(cat.id)}
+                className={`px-5 py-2.5 rounded-full border flex items-center gap-2 transition-all ${
+                  selectedCategory === cat.id
+                    ? `${cat.borderColor} ${cat.bgColor} ${cat.color}`
+                    : "border-border-color bg-surface hover:border-primary/50"
+                }`}
+              >
+                <span className={`material-symbols-outlined text-lg ${selectedCategory === cat.id ? cat.color : "text-text-muted"}`}>
+                  {cat.icon}
+                </span>
+                <span className={`font-mono text-xs font-bold uppercase tracking-wider ${selectedCategory === cat.id ? cat.color : "text-text-muted"}`}>
+                  {cat.label} ({count})
+                </span>
+              </button>
+            );
+          })}
+        </section>
+
+        {/* Skill Grid by Category */}
+        {groupedSkills.map((cat) => {
+          const catSkills = cat.skills;
           if (catSkills.length === 0) return null;
           return (
             <section key={cat.id} className="w-full max-w-6xl mx-auto flex flex-col gap-5">
@@ -374,6 +425,7 @@ export default function SkillsPage() {
           </Link>
         </section>
       </main>
+      <BackToTop />
     </>
   );
 }

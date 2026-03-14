@@ -1,4 +1,5 @@
 import Link from "next/link";
+import BackToTop from "@/components/BackToTop";
 
 const features = [
   {
@@ -535,6 +536,7 @@ export default function LandingPage() {
           </p>
         </div>
       </footer>
+      <BackToTop />
     </div>
   );
 }

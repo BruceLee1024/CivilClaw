@@ -12,6 +12,7 @@ export interface ArticleMeta {
   featured: boolean;
   icon: string;
   iconColor: string;
+  wordCount?: number; // 字数统计（可选）
 }
 
 export interface Article extends ArticleMeta {
